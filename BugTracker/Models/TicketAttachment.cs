@@ -17,6 +17,9 @@ namespace BugTracker.Models
         [DisplayName("Team Member")]
         public string? UserId { get; set; }
 
+        [DisplayName("File Description")]
+        public string? Description { get; set; }
+
         [NotMapped]
         [DataType(DataType.Upload)]
         public IFormFile? FormFile { get; set; }
