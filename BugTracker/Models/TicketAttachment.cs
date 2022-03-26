@@ -36,6 +36,6 @@ namespace BugTracker.Models
 
         // Navigation properties
         public virtual Ticket? Ticket { get; set; }
-        public virtual BTUser? User { get; set; }
+        public virtual BTUser? User { get; set; } // the 'virtual' keyword means the property won't be created, since they are navigation properties
     }
 }
