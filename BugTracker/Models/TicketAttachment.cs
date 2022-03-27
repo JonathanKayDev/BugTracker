@@ -6,16 +6,12 @@ namespace BugTracker.Models
 {
     public class TicketAttachment
     {
+        // Primary Key
         public int Id { get; set; }
 
-        [DisplayName("Ticket")]
-        public int TicketId { get; set; } // foreign key
 
         [DisplayName("File Date")]
         public DateTimeOffset Created { get; set; }
-
-        [DisplayName("Team Member")]
-        public string? UserId { get; set; }
 
         [DisplayName("File Description")]
         public string? Description { get; set; }
@@ -33,6 +29,12 @@ namespace BugTracker.Models
         public string? FileType { get; set; }
 
 
+        // Foreign keys - retrieved from navigation property below
+        [DisplayName("Ticket")]
+        public int TicketId { get; set; }
+
+        [DisplayName("Team Member")]
+        public string? UserId { get; set; }
 
         // Navigation properties
         public virtual Ticket? Ticket { get; set; }
