@@ -1,5 +1,6 @@
 using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Services;
 using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,8 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
     .AddDefaultTokenProviders();  // this does not come by default with AddIdentity
 
 // Register custom services
-builder.Services.AddScoped<IBTRolesService, IBTRolesService>();
+builder.Services.AddScoped<IBTRolesService, BTRolesService>();
+builder.Services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
 
 builder.Services.AddControllersWithViews();
 
