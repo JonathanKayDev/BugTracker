@@ -27,7 +27,40 @@ namespace BugTracker.Services
 
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            BTUser currentPM = await GetProjectManagerAsync(projectId);
+
+            // Remove the current PM is necessary
+            if (currentPM != null)
+            {
+                try
+                {
+                    await RemoveProjectManagerAsync(projectId);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"**** ERROR **** - Error removing project manager from project. --> {ex.Message}");
+                    return false;
+                }
+            }
+
+            // Add the new PM
+            try
+            {
+                //TODO - test below works - had to deviate from tutorials
+                await AddUserToProjectAsync(userId, projectId);
+
+                // Add PM to user role
+                BTUser newPM = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                await _rolesService.AddUserToToleAsync(newPM, Roles.ProjectManager.ToString());
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"**** ERROR **** - Error adding project manager to project. --> {ex.Message}");
+                return false;
+            }
         }
 
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
@@ -136,9 +169,19 @@ namespace BugTracker.Services
             return result;
         }
 
-        public Task<BTUser> GetProjectManagerAsync(int projectId)
+        public async Task<BTUser> GetProjectManagerAsync(int projectId)
         {
-            throw new NotImplementedException();
+            Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+
+            foreach (BTUser member in project?.Members)
+            {
+                if (await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                {
+                    return member;
+                }
+            }
+
+            return null;
         }
 
         public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
@@ -208,7 +251,9 @@ namespace BugTracker.Services
 
         public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
         {
-            Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+            Project project = await _context.Projects
+                                            .Include(p => p.Members)
+                                            .FirstOrDefaultAsync(p => p.Id == projectId);
             bool result = false;
 
             if (project != null)
@@ -226,9 +271,26 @@ namespace BugTracker.Services
             return priorityId;
         }
 
-        public Task RemoveProjectManagerAsync(int projectId)
+        public async Task RemoveProjectManagerAsync(int projectId)
         {
-            throw new NotImplementedException();
+            Project project = await _context.Projects
+                                            .Include(p => p.Members)
+                                            .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            try
+            {
+                foreach (BTUser member in project?.Members)
+                {
+                    if (await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                    {
+                        await RemoveUserFromProjectAsync(member.Id, projectId);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task RemoveUserFromProjectAsync(string userId, int projectId)
