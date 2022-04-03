@@ -50,7 +50,7 @@ namespace BugTracker.Models
         // Navigation properties
         public virtual Company? Company { get; set; }
         public virtual ProjectPriority? ProjectPriority { get; set; }
-        public virtual ICollection<BTUser>? Members { get; set; } = new HashSet<BTUser>(); // many to many
-        public virtual ICollection<Ticket>? Tickets { get; set; } = new HashSet<Ticket>(); // one to many
+        public virtual ICollection<BTUser> Members { get; set; } = new HashSet<BTUser>(); // many to many
+        public virtual ICollection<Ticket> Tickets { get; set; } = new HashSet<Ticket>(); // one to many
     }
 }

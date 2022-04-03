@@ -15,8 +15,8 @@ namespace BugTracker.Models
 
 
         // Navigation properties
-        public virtual ICollection<BTUser>? Members { get; set; } = new HashSet<BTUser>();
-        public virtual ICollection<Project>? Projects { get; set; } = new HashSet<Project>();
-        public virtual ICollection<Invite>? Invites { get; set; } = new HashSet<Invite>();
+        public virtual ICollection<BTUser> Members { get; set; } = new HashSet<BTUser>();
+        public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();
+        public virtual ICollection<Invite> Invites { get; set; } = new HashSet<Invite>();
     }
 }

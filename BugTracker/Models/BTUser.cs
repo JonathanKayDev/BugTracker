@@ -37,7 +37,7 @@ namespace BugTracker.Models
 
 
         // Navigation properties
-        public virtual ICollection<Project>? Projects { get; set; } = new HashSet<Project>();
+        public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 
     }
 }
