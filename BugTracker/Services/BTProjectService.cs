@@ -27,9 +27,31 @@ namespace BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddUserToProjectAsync(string userId, int projectId)
+        public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            BTUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if(user != null)
+            {
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+                
+                if(!await IsUserOnProjectAsync(userId, projectId))
+                {
+                    try
+                    {
+                        project.Members.Add(user);
+                        await _context.SaveChangesAsync();
+                        return true;
+                    }
+                    catch(Exception)
+                    {
+                        throw;
+                    }
+                    
+                }
+            }
+
+            return false; 
         }
 
         // CRUD - Archive
@@ -48,7 +70,7 @@ namespace BugTracker.Services
         {
             List<Project> results = new();
 
-            results = await _context.Projects.Where(p => p.CompanyId == companyId)
+            results = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
                                                 // navigation items 'eager loaded' otherwise navigation items won't be avilable in results
                                                 .Include(p => p.Members)
                                                 .Include(p => p.Tickets)
@@ -120,9 +142,40 @@ namespace BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Project>> GetUserProjectsAsync(string userId)
+        public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Project> userProjects = (await _context.Users.Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Company)
+                                                                .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Members)
+                                                                .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Tickets)
+                                                                .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Tickets)
+                                                                        .ThenInclude(t => t.DeveloperUser)
+                                                                .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Tickets)
+                                                                        .ThenInclude(t => t.OwnerUser)
+                                                                .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Tickets)
+                                                                        .ThenInclude(t => t.TicketPriority)
+                                                                .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Tickets)
+                                                                        .ThenInclude(t => t.TicketStatus)
+                                                                .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Tickets)
+                                                                        .ThenInclude(t => t.TicketType)
+                                                                .FirstOrDefaultAsync(u => u.Id == userId)).Projects.ToList();
+
+                return userProjects;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"**** ERROR **** - Error getting user from project list. --> {ex.Message}");
+                throw;
+            }
         }
 
         public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
@@ -130,9 +183,17 @@ namespace BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsUserOnProject(string userId, int projectId)
+        public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+            bool result = false;
+
+            if (project != null)
+            {
+                result = project.Members.Any(m => m.Id == userId);
+            }
+
+            return result;
         }
 
         public async Task<int> LookupProjectPriorityId(string priorityName)
@@ -147,9 +208,30 @@ namespace BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task RemoveUserFromProjectAsync(string userId, int projectId)
+        public async Task RemoveUserFromProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BTUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+                try
+                {
+                    if (await IsUserOnProjectAsync(userId, projectId))
+                    {
+                        project.Members.Remove(user);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"**** ERROR **** - Error removing user from project. --> {ex.Message}");
+            }
         }
 
         public Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
