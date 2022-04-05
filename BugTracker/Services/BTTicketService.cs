@@ -1,18 +1,33 @@
-﻿using BugTracker.Models;
+﻿using BugTracker.Data;
+using BugTracker.Models;
 using BugTracker.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Services
 {
     public class BTTicketService : IBTTicketService
     {
-        public Task AddNewTicketAsync(Ticket ticket)
+        private readonly ApplicationDbContext _context;
+
+        // Constructor method
+        public BTTicketService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            // Dependency injection
+            _context = context;
         }
 
-        public Task ArchiveTicketAsync(Ticket ticket)
+
+        public async Task AddNewTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            _context.Add(ticket);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ArchiveTicketAsync(Ticket ticket)
+        {
+            ticket.Archived = true;
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
         }
 
         public Task AssignTicketAsync(int ticketId, string userId)
@@ -65,9 +80,9 @@ namespace BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<Ticket> GetTicketByIdAsync(int ticketId)
+        public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
-            throw new NotImplementedException();
+            return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
         }
 
         public Task<BTUser> GetTicketDeveloperAsync(int ticketId)
@@ -100,9 +115,10 @@ namespace BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateTicketAsync(Ticket ticket)
+        public async Task UpdateTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
         }
     }
 }

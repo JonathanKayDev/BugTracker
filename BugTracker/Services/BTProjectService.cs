@@ -9,7 +9,7 @@ namespace BugTracker.Services
     public class BTProjectService : IBTProjectService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IBTRolesService _rolesService;
+        private readonly IBTRolesService _rolesService; // TODO - Question - why instantiate an Interface?
 
         // Constructor
         public BTProjectService(ApplicationDbContext context, IBTRolesService rolesService)
