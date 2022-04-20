@@ -52,7 +52,7 @@ namespace BugTracker.Services
                 // Add PM to user role
                 BTUser newPM = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-                await _rolesService.AddUserToToleAsync(newPM, Roles.ProjectManager.ToString());
+                await _rolesService.AddUserToRoleAsync(newPM, Roles.ProjectManager.ToString());
 
                 return true;
             }

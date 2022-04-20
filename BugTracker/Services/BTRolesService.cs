@@ -24,7 +24,7 @@ namespace BugTracker.Services
         }
 
 
-        public async Task<bool> AddUserToToleAsync(BTUser user, string roleName)
+        public async Task<bool> AddUserToRoleAsync(BTUser user, string roleName)
         {
             bool result = (await _userManager.AddToRoleAsync(user, roleName)).Succeeded;
             return result;
