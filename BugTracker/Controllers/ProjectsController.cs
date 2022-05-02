@@ -109,7 +109,7 @@ namespace BugTracker.Controllers
                     // This code is AFTER saving project so that project is given an Id with EntityFramework
                     if (!string.IsNullOrEmpty(model.PmId))
                     {
-                        await _projectService.AddUserToProjectAsync(model.PmId, model.Project.Id);
+                        await _projectService.AddProjectManagerAsync(model.PmId, model.Project.Id);
                     }
                 }
                 catch (Exception)
