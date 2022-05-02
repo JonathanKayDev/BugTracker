@@ -18,9 +18,11 @@ namespace BugTracker.Models
         public string? Description { get; set; }
 
         [DisplayName("Start Date")]
+        [DataType(DataType.Date)]
         public DateTimeOffset StartDate { get; set; }
 
         [DisplayName("End Date")]
+        [DataType(DataType.Date)]
         public DateTimeOffset EndDate { get; set; }
 
         [DisplayName("Archived")]
