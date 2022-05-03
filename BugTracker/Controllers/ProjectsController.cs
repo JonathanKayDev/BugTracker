@@ -111,6 +111,9 @@ namespace BugTracker.Controllers
                     {
                         await _projectService.AddProjectManagerAsync(model.PmId, model.Project.Id);
                     }
+
+                    // TODO - Redirect to All Projects
+                    return RedirectToAction("Index");
                 }
                 catch (Exception)
                 {
@@ -118,8 +121,6 @@ namespace BugTracker.Controllers
                     throw;
                 }
 
-                // TODO - Redirect to All Projects
-                return RedirectToAction("Index");
             }
 
             return RedirectToAction("Create");
@@ -147,36 +148,41 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,Archived,ImageFileName,ImageFileData,ImageFileType,CompanyId,ProjectPriorityId")] Project project)
+        public async Task<IActionResult> Edit(AddProjectWithPMViewModel model)
         {
-            if (id != project.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
+            if (model != null)
             {
                 try
                 {
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
+                    // Add project image
+                    if (model.Project.ImageFormFile != null)
+                    {
+                        model.Project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(model.Project.ImageFormFile);
+                        model.Project.ImageFileName = model.Project.ImageFormFile.FileName;
+                        model.Project.ImageFileType = model.Project.ImageFormFile.ContentType;
+                    }
+
+                    // Update project to Db
+                    await _projectService.UpdateProjectAsync(model.Project);
+
+                    // Add PM if one was chosen
+                    // This code is AFTER saving project so that project is given an Id with EntityFramework
+                    if (!string.IsNullOrEmpty(model.PmId))
+                    {
+                        await _projectService.AddProjectManagerAsync(model.PmId, model.Project.Id);
+                    }
+
+                    // TODO - Redirect to All Projects
+                    return RedirectToAction("Index");
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception)
                 {
-                    if (!ProjectExists(project.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return View(project);
+
+            return RedirectToAction("Edit");
         }
 
         // GET: Projects/Delete/5
