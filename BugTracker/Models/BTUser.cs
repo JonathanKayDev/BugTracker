@@ -33,7 +33,7 @@ namespace BugTracker.Models
         public string? AvatarFileType { get; set; }
 
         // Foreign Key
-        public int? CompanyId { get; set; }
+        public int CompanyId { get; set; }
 
 
         // Navigation properties
