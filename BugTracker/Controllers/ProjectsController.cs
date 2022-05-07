@@ -43,6 +43,12 @@ namespace BugTracker.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: MyProjects
+        public async Task<IActionResult> MyProjects()
+        {
+            
+        }
+
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {

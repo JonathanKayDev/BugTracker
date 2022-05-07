@@ -8,23 +8,30 @@ namespace BugTracker.Services
 {
     public class BTProjectService : IBTProjectService
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
-        private readonly IBTRolesService _rolesService; // TODO - Question - why instantiate an Interface?
+        private readonly IBTRolesService _rolesService; // TODO - Question - why instantiate an Interface? 
+        #endregion
 
+        #region Constructor
         // Constructor
         public BTProjectService(ApplicationDbContext context, IBTRolesService rolesService)
         {
             _context = context;
             _rolesService = rolesService;
         }
+        #endregion
 
+        #region Add New Project
         // CRUD - Create
         public async Task AddNewProjectAsync(Project project)
         {
             _context.Add(project);
             await _context.SaveChangesAsync();
         }
+        #endregion
 
+        #region Add Project Manager
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
             BTUser currentPM = await GetProjectManagerAsync(projectId);
@@ -62,16 +69,18 @@ namespace BugTracker.Services
                 return false;
             }
         }
+        #endregion
 
+        #region Add User To Project
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
             BTUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            if(user != null)
+            if (user != null)
             {
                 Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
-                
-                if(!await IsUserOnProjectAsync(userId, projectId))
+
+                if (!await IsUserOnProjectAsync(userId, projectId))
                 {
                     try
                     {
@@ -79,17 +88,19 @@ namespace BugTracker.Services
                         await _context.SaveChangesAsync();
                         return true;
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         throw;
                     }
-                    
+
                 }
             }
 
-            return false; 
+            return false;
         }
+        #endregion
 
+        #region Archive Project
         // CRUD - Archive
         public async Task ArchiveProjectAsync(Project project)
         {
@@ -112,7 +123,9 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Get All Project Members Except Project Manager
         public async Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
             List<BTUser> developers = await GetProjectMembersByRoleAsync(projectId, Roles.Developer.ToString());
@@ -123,7 +136,9 @@ namespace BugTracker.Services
 
             return teamMembers;
         }
+        #endregion
 
+        #region Get All Projects By Company Id
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
             List<Project> results = new();
@@ -154,7 +169,9 @@ namespace BugTracker.Services
 
             return results;
         }
+        #endregion
 
+        #region Get All Projects By Priority
         public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
         {
             List<Project> results = await GetAllProjectsByCompany(companyId);
@@ -162,19 +179,25 @@ namespace BugTracker.Services
 
             return results.Where(p => p.ProjectPriorityId == priorityId).ToList();
         }
+        #endregion
 
+        #region Get Archived Projects By Company
         public async Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
         {
             List<Project> results = await GetAllProjectsByCompany(companyId);
 
             return results.Where(p => p.Archived == true).ToList();
         }
+        #endregion
 
+        #region Get Developers On Project
         public Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
         {
             throw new NotImplementedException();
         }
+        #endregion
 
+        #region Get Project By Id
         // CRUD - Read
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
@@ -184,7 +207,9 @@ namespace BugTracker.Services
                                                     .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
             return result;
         }
+        #endregion
 
+        #region Get Project Manager
         public async Task<BTUser> GetProjectManagerAsync(int projectId)
         {
             Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
@@ -199,7 +224,9 @@ namespace BugTracker.Services
 
             return null;
         }
+        #endregion
 
+        #region Get Project Members By Role
         public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
         {
             Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
@@ -216,12 +243,16 @@ namespace BugTracker.Services
 
             return members;
         }
+        #endregion
 
+        #region Get Submitters On Project
         public Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
         {
             throw new NotImplementedException();
         }
+        #endregion
 
+        #region Get User Projects
         public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {
             try
@@ -257,14 +288,18 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Get Users Not On Project
         public async Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
             List<BTUser> users = await _context.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToListAsync();
 
             return users.Where(u => u.CompanyId == companyId).ToList();
         }
+        #endregion
 
+        #region Is User On Project
         public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
         {
             Project project = await _context.Projects
@@ -279,14 +314,18 @@ namespace BugTracker.Services
 
             return result;
         }
+        #endregion
 
+        #region Lookup Project Priority Id
         public async Task<int> LookupProjectPriorityId(string priorityName)
         {
             int priorityId = (await _context.ProjectPriorities.FirstOrDefaultAsync(p => p.Name == priorityName)).Id;
 
             return priorityId;
         }
+        #endregion
 
+        #region Remove Project Manager
         public async Task RemoveProjectManagerAsync(int projectId)
         {
             Project project = await _context.Projects
@@ -308,7 +347,9 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Remove User From Project
         public async Task RemoveUserFromProjectAsync(string userId, int projectId)
         {
             try
@@ -334,7 +375,9 @@ namespace BugTracker.Services
                 Console.WriteLine($"**** ERROR **** - Error removing user from project. --> {ex.Message}");
             }
         }
+        #endregion
 
+        #region Remove Users From Project By Role
         public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
             try
@@ -362,7 +405,9 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Restore Project
         public async Task RestoreProjectAsync(Project project)
         {
             try
@@ -384,12 +429,15 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Update Project
         // CRUD - Update
         public async Task UpdateProjectAsync(Project project)
         {
             _context.Update(project);
             await _context.SaveChangesAsync();
-        }
+        } 
+        #endregion
     }
 }
