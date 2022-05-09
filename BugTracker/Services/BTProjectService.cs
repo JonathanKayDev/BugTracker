@@ -141,33 +141,39 @@ namespace BugTracker.Services
         #region Get All Projects By Company Id
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
-            List<Project> results = new();
+            try
+            {
+                List<Project> results = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
+                                                    // navigation items 'eager loaded' otherwise navigation items won't be avilable in results
+                                                    .Include(p => p.Members)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.Comments)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.Attachments)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.History)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.Notifications)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.DeveloperUser)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.OwnerUser)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.TicketStatus)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.TicketPriority)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.TicketType)
+                                                    .Include(p => p.ProjectPriority)
+                                                    .ToListAsync();
 
-            results = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
-                                                // navigation items 'eager loaded' otherwise navigation items won't be avilable in results
-                                                .Include(p => p.Members)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.Comments)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.Attachments)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.History)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.Notifications)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.DeveloperUser)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.OwnerUser)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.TicketStatus)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.TicketPriority)
-                                                .Include(p => p.Tickets)
-                                                    .ThenInclude(t => t.TicketType)
-                                                .Include(p => p.ProjectPriority)
-                                                .ToListAsync();
+                return results;
+            }
+            catch (Exception)
+            {
 
-            return results;
+                throw;
+            }
         }
         #endregion
 
@@ -184,9 +190,39 @@ namespace BugTracker.Services
         #region Get Archived Projects By Company
         public async Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
         {
-            List<Project> results = await GetAllProjectsByCompany(companyId);
+            try
+            {
+                List<Project> results = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == true)
+                                                    // navigation items 'eager loaded' otherwise navigation items won't be avilable in results
+                                                    .Include(p => p.Members)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.Comments)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.Attachments)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.History)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.Notifications)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.DeveloperUser)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.OwnerUser)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.TicketStatus)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.TicketPriority)
+                                                    .Include(p => p.Tickets)
+                                                        .ThenInclude(t => t.TicketType)
+                                                    .Include(p => p.ProjectPriority)
+                                                    .ToListAsync();
 
-            return results.Where(p => p.Archived == true).ToList();
+                return results;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         #endregion
 
