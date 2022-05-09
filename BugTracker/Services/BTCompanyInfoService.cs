@@ -7,15 +7,19 @@ namespace BugTracker.Services
 {
     public class BTCompanyInfoService : IBTCompanyInfoService
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
+        #endregion
 
+        #region Constructor
         // Constructor
         public BTCompanyInfoService(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
-
+        #region Get All Members
         public async Task<List<BTUser>> GetAllMembersAsync(int companyId)
         {
             List<BTUser> results = new();
@@ -24,14 +28,16 @@ namespace BugTracker.Services
 
             return results;
         }
+        #endregion
 
+        #region Get All Projects
         public async Task<List<Project>> GetAllProjectsAsync(int companyId)
         {
             List<Project> results = new();
 
             results = await _context.Projects.Where(p => p.CompanyId == companyId)
                                                 // navigation items 'eager loaded' otherwise navigation items won't be avilable in results
-                                                .Include(p => p.Members) 
+                                                .Include(p => p.Members)
                                                 .Include(p => p.Tickets)
                                                     .ThenInclude(t => t.Comments)
                                                 .Include(p => p.Tickets)
@@ -55,7 +61,9 @@ namespace BugTracker.Services
 
             return results;
         }
+        #endregion
 
+        #region Get All Tickets
         public async Task<List<Ticket>> GetAllTicketsAsync(int companyId)
         {
             List<Ticket> results = new();
@@ -66,7 +74,9 @@ namespace BugTracker.Services
 
             return results;
         }
+        #endregion
 
+        #region Get Company Info
         public async Task<Company> GetCompanyInfoByIdAsync(int? companyId)
         {
             Company results = new();
@@ -80,6 +90,7 @@ namespace BugTracker.Services
             }
 
             return results;
-        }
+        } 
+        #endregion
     }
 }
