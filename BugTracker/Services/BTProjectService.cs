@@ -237,11 +237,28 @@ namespace BugTracker.Services
         // CRUD - Read
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
-            Project result = await _context.Projects.Include(p => p.Tickets)
-                                                    .Include(p => p.Members)
-                                                    .Include(p => p.ProjectPriority)
-                                                    .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
-            return result;
+            try
+            {
+                Project result = await _context.Projects.Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketPriority)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketStatus)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketType)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.DeveloperUser)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.OwnerUser)
+                                                .Include(p => p.Members)
+                                                .Include(p => p.ProjectPriority)
+                                                .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         #endregion
 
