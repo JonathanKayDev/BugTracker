@@ -65,7 +65,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Create
-        public async IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             BTUser btUser = await _userManager.GetUserAsync(User);
             int companyId = User.Identity.GetCompanyId().Value;
