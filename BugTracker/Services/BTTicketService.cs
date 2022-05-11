@@ -27,7 +27,6 @@ namespace BugTracker.Services
         }
         #endregion
 
-
         #region Add New Ticket
         public async Task AddNewTicketAsync(Ticket ticket)
         {
@@ -481,7 +480,7 @@ namespace BugTracker.Services
             {
                 throw;
             }
-        } 
+        }
         #endregion
     }
 }
