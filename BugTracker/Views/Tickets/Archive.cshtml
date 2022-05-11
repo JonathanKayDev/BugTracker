@@ -51,31 +51,31 @@
             @Html.DisplayNameFor(model => model.TicketType)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketType.Id)
+            @Html.DisplayFor(model => model.TicketType.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.TicketPriority)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketPriority.Id)
+            @Html.DisplayFor(model => model.TicketPriority.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.TicketStatus)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketStatus.Id)
+            @Html.DisplayFor(model => model.TicketStatus.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.OwnerUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OwnerUser.Id)
+            @Html.DisplayFor(model => model.OwnerUser.FullName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DeveloperUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeveloperUser.Id)
+            @Html.DisplayFor(model => model.DeveloperUser.FullName)
         </dd>
     </dl>
     
