@@ -67,8 +67,16 @@ namespace BugTracker.Controllers
             {
                 return View(tickets);
             }
+        }
 
-            
+        //GET: ArchivedTickets
+        public async Task<IActionResult> ArchivedTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Ticket> tickets = await _ticketService.GetArchivedTicketsAsync(companyId);
+
+            return View(tickets);
+
         }
 
         // GET: Tickets/Details/5
