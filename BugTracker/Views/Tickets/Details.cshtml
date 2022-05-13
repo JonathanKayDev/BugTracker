@@ -1,7 +1,17 @@
 ﻿@model BugTracker.Models.Ticket
+@using BugTracker.Models.Enums
+@using BugTracker.Services.Interfaces
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<BTUser> UserManager
+@inject IBTProjectService ProjectService
+@inject IBTTicketHistoryService TicketHistoryService
+@inject IBTFileService FileService
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
+	BTUser btUser = await UserManager.GetUserAsync(User);
+	BTUser projectManager = await ProjectService.GetProjectManagerAsync(Model.ProjectId);
 }
 
 
@@ -17,16 +27,22 @@
 							@*Title of Ticket*@
 							<h5>@Model.Title</h5>
 							@*Description of Ticket*@
-							<p>[Description]</p>
+							<p>@Model.Description</p>
 							<div class="progress-container progress-info m-b-25">
-															@*Project Name and information*@
-								<span class="progress-badge" style="font-size:small">Project: [Project Name]</span>
+								@*Project Name and information*@
+								<span class="progress-badge" style="font-size:small">Project: @Model.Project.Name</span>
 								<div class="progress">
 									@*Progress bar logic*@
-																						@*Variable from razor logic*@
-									<div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: [Percent]%;">
-													@*Variable from razor logic*@
-										<span class="progress-value">[Percent]%</span>
+                                    @{
+                                        var start = Model.Project.StartDate.DateTime;
+                                        var end = Model.Project.EndDate.DateTime;
+                                        var today = DateTime.Now;
+                                        var percent = today >= end ? 100 : today < start ? 0 : Math.Round((today.Subtract(start)) / (end.Subtract(start)) * 100);
+                                    }
+									@*Variable from razor logic*@
+									<div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: @percent%;">
+										@*Variable from razor logic*@
+										<span class="progress-value">@percent%</span>
 									</div>
 								</div>
 							</div>
@@ -34,16 +50,16 @@
 					</div>
 					<div class="card col m-1 p-2">
 						<div class="card-body">
-							<ul class="list-unstyled">				  @*Ticket date*@
-								<li><strong>Date Entered:</strong> <span class="">  [Ticket created date]</</span></li>
+							<ul class="list-unstyled">	@*Ticket date*@
+								<li><strong>Date Entered:</strong> <span class="">  @Model.Created.ToString("dd MMM, yyyy")</</span></li>
 														@*Project end date*@
-								<li><strong>Deadline:</strong> <span class="">  [Project End date]</</span></li>
+								<li><strong>Deadline:</strong> <span class="">  @Model.Project.EndDate.ToString("dd MMM, yyyy")</</span></li>
 														@*Ticket type*@
-								<li><strong>Type:</strong> <span class="">  [Ticket Type]</span></li>
+								<li><strong>Type:</strong> <span class="">  @Model.TicketType.Name</span></li>
 														@*Ticket priority*@
-								<li><strong>Priority:</strong> <span class="">  [Ticket priority]</span></li>
+								<li><strong>Priority:</strong> <span class="">  @Model.TicketPriority.Name</span></li>
 														@*Ticket status*@
-								<li><strong>Status:</strong> <span class="">  [Ticket status]</span></li>
+								<li><strong>Status:</strong> <span class="">  @Model.TicketStatus.Name</span></li>
 							</ul>
 						</div>
 					</div>
