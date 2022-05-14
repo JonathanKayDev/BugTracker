@@ -17,32 +17,42 @@ namespace BugTracker.Controllers
 {
     public class TicketsController : Controller
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTProjectService _projectService;
         private readonly IBTLookupService _lookupService;
         private readonly IBTTicketService _ticketService;
+        private readonly IBTFileService _fileService;
+        #endregion
 
+        #region Constructor
         public TicketsController(ApplicationDbContext context,
-                                    UserManager<BTUser> userManager,
-                                    IBTProjectService projectService,
-                                    IBTLookupService lookupService, 
-                                    IBTTicketService ticketService)
+                            UserManager<BTUser> userManager,
+                            IBTProjectService projectService,
+                            IBTLookupService lookupService,
+                            IBTTicketService ticketService,
+                            IBTFileService fileService)
         {
             _context = context;
             _userManager = userManager;
             _projectService = projectService;
             _lookupService = lookupService;
             _ticketService = ticketService;
+            _fileService = fileService;
         }
+        #endregion
 
+        #region Index
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Tickets.Include(t => t.DeveloperUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             return View(await applicationDbContext.ToListAsync());
         }
+        #endregion
 
+        #region My Tickets
         //GET: MyTickets
         public async Task<IActionResult> MyTickets()
         {
@@ -51,7 +61,9 @@ namespace BugTracker.Controllers
 
             return View(tickets);
         }
+        #endregion
 
+        #region All Tickets
         //GET: AllTickets
         public async Task<IActionResult> AllTickets()
         {
@@ -68,7 +80,9 @@ namespace BugTracker.Controllers
                 return View(tickets);
             }
         }
+        #endregion
 
+        #region Archived Tickets
         //GET: ArchivedTickets
         public async Task<IActionResult> ArchivedTickets()
         {
@@ -78,7 +92,9 @@ namespace BugTracker.Controllers
             return View(tickets);
 
         }
+        #endregion
 
+        #region Details
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -96,7 +112,9 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
+        #region Create
         // GET: Tickets/Create
         public async Task<IActionResult> Create()
         {
@@ -155,7 +173,9 @@ namespace BugTracker.Controllers
             ViewData["TicketTypeId"] = new SelectList(await _lookupService.GetTicketTypesAsync(), "Id", "Name");
             return View(ticket);
         }
+        #endregion
 
+        #region Edit
         // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -222,7 +242,9 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
+        #region Add Ticket Comment
         // POST: Tickets/AddTicketComment
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -234,7 +256,7 @@ namespace BugTracker.Controllers
                 {
                     ticketComment.UserId = _userManager.GetUserId(User);
                     ticketComment.Created = DateTimeOffset.Now;
-                    
+
                     await _ticketService.AddTicketCommentAsync(ticketComment);
                 }
                 catch (Exception)
@@ -244,9 +266,41 @@ namespace BugTracker.Controllers
                 }
             }
 
-            return RedirectToAction("Details", new { id = ticketComment.TicketId});
+            return RedirectToAction("Details", new { id = ticketComment.TicketId });
         }
+        #endregion
 
+        #region Add Ticket Attachment
+        // POST: Tickets/AddTicketAttachment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTicketAttachment([Bind("Id,FormFile,Description,TicketId")] TicketAttachment ticketAttachment)
+        {
+            string statusMessage;
+
+            if (ModelState.IsValid && ticketAttachment.FormFile != null)
+            {
+                ticketAttachment.FileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
+                ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
+                ticketAttachment.FileType = ticketAttachment.FormFile.ContentType;
+
+                ticketAttachment.Created = DateTimeOffset.Now;
+                ticketAttachment.UserId = _userManager.GetUserId(User);
+
+                await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+                statusMessage = "Success: New attachment added to Ticket.";
+            }
+            else
+            {
+                statusMessage = "Error: Invalid data.";
+
+            }
+
+            return RedirectToAction("Details", new { id = ticketAttachment.TicketId, message = statusMessage });
+        }
+        #endregion
+
+        #region Archive
         // GET: Tickets/Archive/5
         public async Task<IActionResult> Archive(int? id)
         {
@@ -275,7 +329,9 @@ namespace BugTracker.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region Restore
         // GET: Tickets/Restore/5
         public async Task<IActionResult> Restore(int? id)
         {
@@ -304,12 +360,15 @@ namespace BugTracker.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region Ticket Exists
         private async Task<bool> TicketExists(int id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
 
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(t => t.Id == id);
-        }
+        } 
+        #endregion
     }
 }

@@ -42,6 +42,22 @@ namespace BugTracker.Services
         }
         #endregion
 
+        #region Add Ticket Attachment
+        public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+        {
+            try
+            {
+                await _context.AddAsync(ticketAttachment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        #endregion
+
         #region Add Ticket Comment
         public async Task AddTicketCommentAsync(TicketComment ticketComment)
         {
