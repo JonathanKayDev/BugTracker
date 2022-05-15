@@ -130,7 +130,7 @@ namespace BugTracker.Controllers
         #endregion
 
         #region Assign Developer
-        //GET: AssignTickets
+        //GET: AssignDeveloper
         public async Task<IActionResult> AssignDeveloper(int id)
         {
             AssignDeveloperViewModel model = new();
@@ -140,6 +140,19 @@ namespace BugTracker.Controllers
                                                 "Id","FullName");
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //POST: AssignDeveloper
+        public async Task<IActionResult> AssignDeveloper(AssignDeveloperViewModel model)
+        {
+            if (model.DeveloperId != null)
+            {
+                await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DeveloperId);
+            }
+
+            return RedirectToAction(nameof(AssignDeveloper), new {id = model.Ticket.Id});
         }
         #endregion
 
