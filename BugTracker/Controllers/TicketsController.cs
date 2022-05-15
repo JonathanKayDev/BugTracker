@@ -362,6 +362,19 @@ namespace BugTracker.Controllers
         }
         #endregion
 
+        #region Show File
+        public async Task<IActionResult> ShowFile(int id)
+        {
+            TicketAttachment ticketAttachment = await _ticketService.GetTicketAttachmentByIdAsync(id);
+            string fileName = ticketAttachment.FileName;
+            byte[] fileData = ticketAttachment.FileData;
+            string ext = Path.GetExtension(fileName).Replace(".", "");
+
+            Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
+            return File(fileData, $"application/{ext}");
+        }
+        #endregion
+
         #region Ticket Exists
         private async Task<bool> TicketExists(int id)
         {
