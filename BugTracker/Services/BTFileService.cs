@@ -81,7 +81,7 @@ namespace BugTracker.Services
             {
                 fileImage = Path.GetExtension(file).Replace(".", "");
 
-                return $"/img/png/{fileImage}.png";
+                return $"/img/contenttype/{fileImage}.png";
             }
 
             return fileImage;
