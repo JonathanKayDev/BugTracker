@@ -305,6 +305,38 @@ namespace BugTracker.Services
         }
         #endregion
 
+        #region Get Unassigned Projects
+        public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
+        {
+            List<Project> results = new();
+            List<Project> projects = new();
+
+            try
+            {
+                projects = await _context.Projects
+                                            .Include(p => p.ProjectPriority)
+                                            .Where(p => p.CompanyId == companyId)
+                                            .ToListAsync();
+
+                foreach (Project project in projects)
+                {
+                    // Check to see if PM in project, if not then add to results list
+                    if ((await GetProjectMembersByRoleAsync(project.Id, nameof(Roles.ProjectManager))).Count == 0)
+                    {
+                        results.Add(project);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return results;
+        }
+        #endregion
+
         #region Get User Projects
         public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {

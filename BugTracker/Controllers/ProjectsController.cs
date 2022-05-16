@@ -13,11 +13,13 @@ using BugTracker.Models.ViewModels;
 using BugTracker.Services.Interfaces;
 using BugTracker.Models.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker.Controllers
 {
     public class ProjectsController : Controller
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
         private readonly IBTRolesService _rolesService;
         private readonly IBTLookupService _lookupService;
@@ -25,14 +27,16 @@ namespace BugTracker.Controllers
         private readonly IBTProjectService _projectService;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTCompanyInfoService _companyInfoService;
+        #endregion
 
+        #region Constructor
         public ProjectsController(ApplicationDbContext context,
-                                    IBTRolesService rolesService,
-                                    IBTLookupService lookupService,
-                                    IBTFileService fileService,
-                                    IBTProjectService projectService,
-                                    UserManager<BTUser> userManager,
-                                    IBTCompanyInfoService companyInfoService)
+                            IBTRolesService rolesService,
+                            IBTLookupService lookupService,
+                            IBTFileService fileService,
+                            IBTProjectService projectService,
+                            UserManager<BTUser> userManager,
+                            IBTCompanyInfoService companyInfoService)
         {
             _context = context;
             _rolesService = rolesService;
@@ -42,14 +46,18 @@ namespace BugTracker.Controllers
             _userManager = userManager;
             _companyInfoService = companyInfoService;
         }
+        #endregion
 
+        #region Index
         // GET: Projects
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
             return View(await applicationDbContext.ToListAsync());
         }
+        #endregion
 
+        #region My Projects
         // GET: MyProjects
         public async Task<IActionResult> MyProjects()
         {
@@ -57,13 +65,15 @@ namespace BugTracker.Controllers
             List<Project> projects = await _projectService.GetUserProjectsAsync(userId);
             return View(projects);
         }
+        #endregion
 
+        #region All Projects
         // GET: AllProjects
         public async Task<IActionResult> AllProjects()
         {
             int companyId = User.Identity.GetCompanyId().Value;
             List<Project> projects = new();
-            
+
             if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
             {
                 // Data for Admins & PMs
@@ -79,7 +89,9 @@ namespace BugTracker.Controllers
 
             return View(projects);
         }
+        #endregion
 
+        #region Archived Projects
         // GET: ArchivedProjects
         public async Task<IActionResult> ArchivedProjects()
         {
@@ -87,7 +99,22 @@ namespace BugTracker.Controllers
             List<Project> projects = await _projectService.GetArchivedProjectsByCompany(companyId);
             return View(projects);
         }
+        #endregion
 
+        #region Unassigned Projects
+        [Authorize(Roles="Admin")]
+        public async Task<IActionResult> UnassignedProjects()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> projects = new();
+
+            projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+
+            return View(projects);
+        } 
+        #endregion
+
+        #region Details
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -107,7 +134,9 @@ namespace BugTracker.Controllers
 
             return View(project);
         }
+        #endregion
 
+        #region Create
         // GET: Projects/Create
         public async Task<IActionResult> Create()
         {
@@ -117,7 +146,7 @@ namespace BugTracker.Controllers
             AddProjectWithPMViewModel model = new();
 
             // Load SelectLists with data, i.e. PMList & PriorityList
-            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId),"Id","FullName");
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
             model.PriorityList = new SelectList(await _lookupService.GetProjectPrioritiesAsync(), "Id", "Name");
 
             return View(model);
@@ -170,7 +199,9 @@ namespace BugTracker.Controllers
 
             return RedirectToAction("Create");
         }
+        #endregion
 
+        #region Edit
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -229,7 +260,9 @@ namespace BugTracker.Controllers
 
             return RedirectToAction("Edit");
         }
+        #endregion
 
+        #region Archive
         // GET: Projects/Archive/5
         public async Task<IActionResult> Archive(int? id)
         {
@@ -261,7 +294,9 @@ namespace BugTracker.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region Restore
         // GET: Projects/Restore/5
         public async Task<IActionResult> Restore(int? id)
         {
@@ -293,11 +328,13 @@ namespace BugTracker.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
-
+        #region Project Exists
         private bool ProjectExists(int id)
         {
             return _context.Projects.Any(e => e.Id == id);
-        }
+        } 
+        #endregion
     }
 }
