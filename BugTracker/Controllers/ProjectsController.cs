@@ -125,7 +125,31 @@ namespace BugTracker.Controllers
             model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(Roles.ProjectManager), companyId), "Id", "FullName");
 
             return View(model);
-        } 
+        }
+
+        // POST: Projects/AssignPM
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignPM(AssignPMViewModel model)
+        {
+            if (!string.IsNullOrEmpty(model.PMId))
+            {
+                try
+                {
+                    await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
+
+                    return RedirectToAction(nameof(Details), new { id = model.Project.Id });
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(AssignPM), new { projectId = model.Project.Id });
+        }
+
         #endregion
 
         #region Details
