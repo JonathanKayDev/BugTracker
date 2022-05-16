@@ -115,6 +115,7 @@ namespace BugTracker.Controllers
         #endregion
 
         #region Assign PM
+        [HttpGet]
         // GET: Projects/AssignPM
         public async Task<IActionResult> AssignPM(int projectId)
         {
@@ -150,6 +151,30 @@ namespace BugTracker.Controllers
             return RedirectToAction(nameof(AssignPM), new { projectId = model.Project.Id });
         }
 
+        #endregion
+
+        #region Assign Members
+        [HttpGet]
+        // GET: Projects/AssignMembers
+        public async Task<IActionResult> AssignMembers(int projectId)
+        {
+            ProjectMembersViewModel model = new();
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            model.Project = await _projectService.GetProjectByIdAsync(projectId, companyId);
+
+            List<BTUser> developers = await _rolesService.GetUsersInRoleAsync(nameof(Roles.Developer), companyId);
+            List<BTUser> submitters = await _rolesService.GetUsersInRoleAsync(nameof(Roles.Submitter), companyId);
+
+            List<BTUser> companyMembers = developers.Concat(submitters).ToList();
+            List<string> projectMembers = model.Project.Members.Select(m=>m.Id).ToList();
+
+            // projectMembers will be greyed out in list below
+            model.Users = new MultiSelectList(companyMembers,"Id","FullName", projectMembers);
+
+            return View(model);
+
+        }
         #endregion
 
         #region Details
