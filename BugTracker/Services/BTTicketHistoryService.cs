@@ -7,13 +7,18 @@ namespace BugTracker.Services
 {
     public class BTTicketHistoryService : IBTTicketHistoryService
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
+        #endregion
 
+        #region Constructor
         public BTTicketHistoryService(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Add History
         public async Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId)
         {
             // New ticket has been added
@@ -157,7 +162,9 @@ namespace BugTracker.Services
                 }
             }
         }
+        #endregion
 
+        #region Get Company Ticket Histories
         public async Task<List<TicketHistory>> GetCompanyTicketHistoriesAsync(int companyId)
         {
             try
@@ -181,7 +188,9 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Get Project Tickets Histories
         public async Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int projectId, int companyId)
         {
             try
@@ -201,6 +210,7 @@ namespace BugTracker.Services
 
                 throw;
             }
-        }
+        } 
+        #endregion
     }
 }
