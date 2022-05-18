@@ -26,6 +26,7 @@ namespace BugTracker.Controllers
         private readonly IBTLookupService _lookupService;
         private readonly IBTTicketService _ticketService;
         private readonly IBTFileService _fileService;
+        private readonly IBTTicketHistoryService _ticketHistoryService;
         #endregion
 
         #region Constructor
@@ -34,7 +35,8 @@ namespace BugTracker.Controllers
                             IBTProjectService projectService,
                             IBTLookupService lookupService,
                             IBTTicketService ticketService,
-                            IBTFileService fileService)
+                            IBTFileService fileService, 
+                            IBTTicketHistoryService ticketHistoryService)
         {
             _context = context;
             _userManager = userManager;
@@ -42,6 +44,7 @@ namespace BugTracker.Controllers
             _lookupService = lookupService;
             _ticketService = ticketService;
             _fileService = fileService;
+            _ticketHistoryService = ticketHistoryService;
         }
         #endregion
 
@@ -275,6 +278,7 @@ namespace BugTracker.Controllers
             if (ModelState.IsValid)
             {
                 BTUser btUser = await _userManager.GetUserAsync(User);
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id); //without notracking, model would update with the Db changes. This notracking gives us a snapshot
 
                 try
                 {
@@ -294,6 +298,8 @@ namespace BugTracker.Controllers
                 }
 
                 // TODO - Add ticket hitory
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                await _ticketHistoryService.AddHistoryAsync(oldTicket, newTicket, btUser.Id);
 
                 return RedirectToAction(nameof(Index));
             }
