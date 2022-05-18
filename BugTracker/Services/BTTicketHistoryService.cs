@@ -18,7 +18,7 @@ namespace BugTracker.Services
         }
         #endregion
 
-        #region Add History
+        #region Add History (1)
         public async Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId)
         {
             // New ticket has been added
@@ -160,6 +160,39 @@ namespace BugTracker.Services
 
                     throw;
                 }
+            }
+        }
+        #endregion
+
+        #region Add History (2)
+        // Used for addition of a comment or attachment on a ticket
+        public async Task AddHistoryAsync(int ticketId, string model, string userId)
+        {
+            try
+            {
+                Ticket ticket = await _context.Tickets.FindAsync(ticketId);
+                string description = model.ToLower().Replace("Ticket", "");
+                description = $"New {description} add to ticket: {ticket.Title}";
+
+                TicketHistory history = new()
+                {
+                    TicketId = ticket.Id,
+                    Property = model,
+                    OldValue = "",
+                    NewValue = "",
+                    Created = DateTimeOffset.Now,
+                    UserId = userId,
+                    Description = description
+                };
+
+                await _context.TicketHistories.AddAsync(history);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
         #endregion
