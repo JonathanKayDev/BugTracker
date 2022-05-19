@@ -212,18 +212,25 @@ namespace BugTracker.Controllers
 
             if (ModelState.IsValid)
             {
-                ticket.Created = DateTimeOffset.Now;
-                ticket.OwnerUserId = btUser.Id;
-                ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync(nameof(BTTicketStatus.New))).Value;
+                try
+                {
+                    ticket.Created = DateTimeOffset.Now;
+                    ticket.OwnerUserId = btUser.Id;
+                    ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync(nameof(BTTicketStatus.New))).Value;
 
-                await _ticketService.AddNewTicketAsync(ticket);
+                    await _ticketService.AddNewTicketAsync(ticket);
 
-                // Ticket history
-                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
-                await _ticketHistoryService.AddHistoryAsync(null, newTicket, btUser.Id);
+                    // Ticket history
+                    Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                    await _ticketHistoryService.AddHistoryAsync(null, newTicket, btUser.Id);
 
+                    // TODO - ticket notification
+                }
+                catch (Exception)
+                {
 
-                // TODO - ticket notification
+                    throw;
+                }
 
                 return RedirectToAction(nameof(Index));
             }
