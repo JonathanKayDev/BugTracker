@@ -216,15 +216,28 @@
                             @foreach (TicketHistory tH in Model.History)
                             {
                                 <div class="">
-                                    <span class="date">@tH.Created.ToString("dd MMM yyyy")</span>
+                                    <span class="date" style="font-weight:bold">@tH.Created.ToString("dd MMM yyyy")</span>
                                     <h6>@tH.Description</h6>
                                     <span>By: <a href="" title="@tH.User.FullName">@tH.User.FullName</a></span>
                                     <div class="">
-                                        <p>The ticket <b>@tH.Property</b> was edited</p>
-                                        <p>@($"Previous {tH.Property}:   {tH.OldValue}")</p>
-                                        <p>@($"Current {tH.Property}:   {tH.NewValue}")</p>
+                                        @if (tH.Description.Contains("New Ticket Created"))
+                                        {
+                                            <p>A ticket was added.</p>
+                                        }
+                                        else if (tH.Property.Equals("TicketComment") || tH.Property.Equals("TicketAttachment"))
+                                        {
+                                            <p>The ticket <b>@tH.Property</b> was added.</p>
+                                        }
+                                        else
+                                        {
+                                            <p>The ticket <b>@tH.Property</b> was edited</p>
+                                            <p>@($"Previous {tH.Property}:  ") <span style="color:red">@tH.OldValue</span></p>
+                                            <p>@($"Current {tH.Property}:   ") <span style="color:green">@tH.NewValue</span></p>
+                                        }
+
                                     </div>
                                 </div>
+                                <hr />
                             }
                         </div>
                     </div>
