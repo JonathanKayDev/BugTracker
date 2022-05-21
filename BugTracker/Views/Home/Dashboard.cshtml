@@ -34,6 +34,63 @@
 
 <div>
 	<div classxfont-weighteighteightgetainer-fluid">
+
+		<!-- Info Pills -->
+		<div class="row mt-2">
+			<div class="col-lg-3 col-md-6 col-sm-6">
+				<a asp-action="AllProjects" asp-controller="Projects" style="text-decoration:none">
+					<div class="card text-center bg-info">
+						<div class="body">
+							<div class="p-15 text-light">
+								<h3>@Model.Projects.Where(p => p.StartDate < DateTime.Now && p.EndDate > DateTime.Now).Count()</h3>
+								<span>Active Projects</span>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-3 col-md-6 col-sm-6">
+				<a asp-action="AllTickets" asp-controller="Tickets" style="text-decoration:none">
+					<div class="card text-center bg-secondary">
+						<div class="body">
+							<div class="p-15 text-light">
+
+								<h3>@Model.Tickets.Count()</h3>
+								<span>Total Tickets</span>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-3 col-md-6 col-sm-6">
+				<div class="card text-center bg-warning">
+					<div class="body">
+						<div class="p-15 text-light">
+							<h3>@Model.Tickets.Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).Count()</h3>
+							<span>Unassigned Tickets</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 col-sm-6">
+				<div class="card text-center bg-dark">
+					<div class="body">
+						<div class="p-15 text-light">
+							<h3>
+								@(
+								Model.Projects.Count()
+								+ Model.Tickets.Count()
+								+ Model.Members.Count()
+								)
+							</h3>
+							<span>Total Data</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 		<div class="row gy-2">
 			<div class="col-md-12 col">
 				<div class="row col-cols-4 mt-5 bg-secondary">
@@ -207,3 +264,9 @@
 		</div>
 	</div>
 </div>
+
+@section scripts{
+
+
+
+}
