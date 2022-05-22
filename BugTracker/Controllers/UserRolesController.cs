@@ -11,15 +11,20 @@ namespace BugTracker.Controllers
     [Authorize]
     public class UserRolesController : Controller
     {
+        #region Properties
         private readonly IBTRolesService _rolesService;
         private readonly IBTCompanyInfoService _companyInfoService;
+        #endregion
 
+        #region Constructor
         public UserRolesController(IBTRolesService rolesService, IBTCompanyInfoService companyInfoService)
         {
             _rolesService = rolesService;
             _companyInfoService = companyInfoService;
         }
+        #endregion
 
+        #region Manage User Roles
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles()
         {
@@ -50,7 +55,6 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel member)
@@ -79,7 +83,7 @@ namespace BugTracker.Controllers
 
             // Navigate back to the view
             return RedirectToAction(nameof(ManageUserRoles));
-
-        }
+        } 
+        #endregion
     }
 }

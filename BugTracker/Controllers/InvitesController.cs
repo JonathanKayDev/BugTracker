@@ -11,22 +11,30 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class InvitesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        #region Properties
+        private readonly ApplicationDbContext _context; 
+        #endregion
 
+        #region Constructor
         public InvitesController(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Index
         // GET: Invites
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Invites.Include(i => i.Company).Include(i => i.Invitee).Include(i => i.Invitor).Include(i => i.Project);
             return View(await applicationDbContext.ToListAsync());
         }
+        #endregion
 
+        #region Details
         // GET: Invites/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,7 +56,9 @@ namespace BugTracker.Controllers
 
             return View(invite);
         }
+        #endregion
 
+        #region Create
         // GET: Invites/Create
         public IActionResult Create()
         {
@@ -78,7 +88,9 @@ namespace BugTracker.Controllers
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", invite.ProjectId);
             return View(invite);
         }
+        #endregion
 
+        #region Edit
         // GET: Invites/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -137,7 +149,9 @@ namespace BugTracker.Controllers
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", invite.ProjectId);
             return View(invite);
         }
+        #endregion
 
+        #region Delete
         // GET: Invites/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -174,6 +188,7 @@ namespace BugTracker.Controllers
         private bool InviteExists(int id)
         {
             return _context.Invites.Any(e => e.Id == id);
-        }
+        } 
+        #endregion
     }
 }

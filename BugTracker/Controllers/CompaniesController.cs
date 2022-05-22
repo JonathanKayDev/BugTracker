@@ -11,21 +11,29 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class CompaniesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        #region Properties
+        private readonly ApplicationDbContext _context; 
+        #endregion
 
+        #region Constructor
         public CompaniesController(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Index
         // GET: Companies
         public async Task<IActionResult> Index()
         {
             return View(await _context.Companies.ToListAsync());
         }
+        #endregion
 
+        #region Details
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -43,7 +51,9 @@ namespace BugTracker.Controllers
 
             return View(company);
         }
+        #endregion
 
+        #region Create
         // GET: Companies/Create
         public IActionResult Create()
         {
@@ -65,7 +75,9 @@ namespace BugTracker.Controllers
             }
             return View(company);
         }
+        #endregion
 
+        #region Edit
         // GET: Companies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -116,7 +128,9 @@ namespace BugTracker.Controllers
             }
             return View(company);
         }
+        #endregion
 
+        #region Delete
         // GET: Companies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -145,10 +159,13 @@ namespace BugTracker.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region Company Exists
         private bool CompanyExists(int id)
         {
             return _context.Companies.Any(e => e.Id == id);
-        }
+        } 
+        #endregion
     }
 }

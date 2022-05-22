@@ -11,22 +11,30 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class NotificationsController : Controller
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
+        #endregion
 
+        #region Constructor
         public NotificationsController(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Index
         // GET: Notifications
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Notifications.Include(n => n.Recipient).Include(n => n.Sender).Include(n => n.Ticket);
             return View(await applicationDbContext.ToListAsync());
         }
+        #endregion
 
+        #region Details
         // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -47,7 +55,9 @@ namespace BugTracker.Controllers
 
             return View(notification);
         }
+        #endregion
 
+        #region Create
         // GET: Notifications/Create
         public IActionResult Create()
         {
@@ -75,7 +85,9 @@ namespace BugTracker.Controllers
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", notification.TicketId);
             return View(notification);
         }
+        #endregion
 
+        #region Edit
         // GET: Notifications/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -132,7 +144,9 @@ namespace BugTracker.Controllers
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", notification.TicketId);
             return View(notification);
         }
+        #endregion
 
+        #region Delete
         // GET: Notifications/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -168,6 +182,7 @@ namespace BugTracker.Controllers
         private bool NotificationExists(int id)
         {
             return _context.Notifications.Any(e => e.Id == id);
-        }
+        } 
+        #endregion
     }
 }
