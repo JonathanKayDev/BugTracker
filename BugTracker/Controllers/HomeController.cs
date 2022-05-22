@@ -6,6 +6,7 @@ using BugTracker.Services.Interfaces;
 using BugTracker.Models.ChartModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker.Controllers
 {
@@ -36,6 +37,7 @@ namespace BugTracker.Controllers
         #endregion
 
         #region Dashboard
+        [Authorize]
         public async Task<IActionResult> Dashboard()
         {
             DashboardViewModel model = new();
