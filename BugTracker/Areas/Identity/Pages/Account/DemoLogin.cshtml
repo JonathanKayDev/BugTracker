@@ -3,79 +3,71 @@
 
 @{
     ViewData["Title"] = "Demo log in";
+
+    string DemoAdminUserName = "demoadmin@bugtracker.com";
+    string DemoProjectManagerUserName = "demopm@bugtracker.com";
+    string DemoDeveloperUserName = "demodev@bugtracker.com";
+    string DemoSubmitterUserName = "demosub@bugtracker.com";
+
+    string DemoUserPassword = "Abc&123!";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
+<div class="row justify-content-center mt-4 pt-4">
     <div class="col-md-4">
         <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
+            <!-- Demo Admin -->
+            <form id="demoAdmin" method="post" class="mb-2">
+                <h2>Log in as Demo Account.</h2>
                 <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <label asp-for="Input.Email" class="form-label"></label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <input asp-for="Input.Email" class="form-control" value=@DemoAdminUserName hidden="true"/>
                 </div>
                 <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                    <label asp-for="Input.Password" class="form-label"></label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
                 </div>
                 <div>
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe" class="form-label">
-                            <input class="form-check-input" asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Admin</button>
                 </div>
             </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
+            <!-- Demo PM -->
+            <form id="demoPM" method="post" class="mb-2">
+                <div class="form-floating">
+                    <input asp-for="Input.Email" class="form-control" value=@DemoProjectManagerUserName hidden="true"/>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Project Manager</button>
+                </div>
+            </form>
+            <!-- Demo Developer -->
+            <form id="demoDeveloper" method="post" class="mb-2">
+                <div class="form-floating">
+                    <input asp-for="Input.Email" class="form-control" value=@DemoDeveloperUserName hidden="true"/>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Developer</button>
+                </div>
+            </form>
+            <!-- Demo Submitter -->
+            <form id="demoSubmitter" method="post" class="mb-2">
+                <div class="form-floating">
+                    <input asp-for="Input.Email" class="form-control" value=@DemoSubmitterUserName hidden="true"/>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Submitter</button>
+                </div>
+            </form>
+            <div class="mt-4">
+                <a asp-page="./Login">Back to account log in</a>
+            </div>
         </section>
     </div>
 </div>
