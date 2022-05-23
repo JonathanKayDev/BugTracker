@@ -2,15 +2,15 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Demo log in";
 }
 
-<div class="row justify-content-center mt-4 pt-4">
+<h1>@ViewData["Title"]</h1>
+<div class="row">
     <div class="col-md-4">
         <section>
-            <!-- Account Login -->
             <form id="account" method="post">
-                <h2>Log in.</h2>
+                <h2>Use a local account to log in.</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
@@ -46,14 +46,36 @@
                     </p>
                 </div>
             </form>
-            <!-- Demo Account Login -->
+        </section>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to log in.</h3>
             <hr />
-            <h2>Demo Account</h2>
-            <form id="demoAccount">
-                <div>
-                    <a class="btn btn-danger" asp-page="./DemoLogin">Demo log in</a>
-                </div>
-            </form>
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                            about setting up this ASP.NET application to support logging in via external services</a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
         </section>
     </div>
 </div>

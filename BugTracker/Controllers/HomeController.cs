@@ -7,6 +7,7 @@ using BugTracker.Models.ChartModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace BugTracker.Controllers
 {
@@ -16,23 +17,33 @@ namespace BugTracker.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBTCompanyInfoService _companyInfoService;
         private readonly IBTProjectService _projectService;
+        private readonly SignInManager<BTUser> _signInManager;
         #endregion
 
         #region Constructor
         public HomeController(ILogger<HomeController> logger,
                                 IBTCompanyInfoService companyInfoService,
-                                IBTProjectService projectService)
+                                IBTProjectService projectService, 
+                                SignInManager<BTUser> signInManager)
         {
             _logger = logger;
             _companyInfoService = companyInfoService;
             _projectService = projectService;
+            _signInManager = signInManager;
         }
         #endregion
 
         #region Index
         public IActionResult Index()
         {
-            return View();
+            if (_signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+                return new RedirectResult("~/Identity/Account/Login");
+            }
         }
         #endregion
 
