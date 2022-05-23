@@ -1,6 +1,12 @@
 ﻿@using BugTracker.Models.Enums
 @using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<BTUser> SignInManager
+@inject UserManager<BTUser> UserManager
+
+@{
+	BTUser btUser = await UserManager.GetUserAsync(User);
+}
 
 
 <!DOCTYPE html>
@@ -15,6 +21,8 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="~/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- JK Styles -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     </head>
     <body class="sb-nav-fixed">
         <!-- Top Navbar -->
@@ -65,68 +73,86 @@
                     {
                         <div class="sb-sidenav-menu">
                             <div class="nav">
-                                <div class="sb-sidenav-menu-heading">Core</div>
-                                <a class="nav-link" href="index.html">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="sb-sidenav-menu-heading">Home</div>
+                                <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-house-user"></i></div>
                                     Dashboard
                                 </a>
                                 <div class="sb-sidenav-menu-heading">Interface</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                    Layouts
+                                <!-- Projects -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProjects" aria-expanded="false" aria-controls="collapseProjects">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-folder-open"></i></div>
+                                    Projects
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <div class="collapse" id="collapseProjects" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                        <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                        {
+                                            <a class="nav-link" asp-area="" asp-controller="Projects" asp-action="Create">Create Project +</a>
+                                        }
+
+                                        @if (!User.IsInRole(nameof(Roles.Admin)))
+                                        {
+                                            <a class="nav-link" asp-area="" asp-controller="Projects" asp-action="MyProjects">My Projects</a>
+                                        }
+
+                                        <a class="nav-link" asp-area="" asp-controller="Projects" asp-action="AllProjects">All Projects</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Projects" asp-action="ArchivedProjects">Archived Projects</a>
+                                    
+                                        @if (User.IsInRole(nameof(Roles.Admin)))
+                                        {
+                                            <a class="nav-link" asp-area="" asp-controller="Projects" asp-action="UnassignedProjects">Unassigned Projects</a>
+                                        }
                                     </nav>
                                 </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                    Pages
+                                <!-- Tickets -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTickets" aria-expanded="false" aria-controls="collapseTickets">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-ticket"></i></div>
+                                    Tickets
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                            Authentication
-                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                        </a>
-                                        <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                            <nav class="sb-sidenav-menu-nested nav">
-                                                <a class="nav-link" href="login.html">Login</a>
-                                                <a class="nav-link" href="register.html">Register</a>
-                                                <a class="nav-link" href="password.html">Forgot Password</a>
-                                            </nav>
-                                        </div>
-                                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                            Error
-                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                        </a>
-                                        <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                            <nav class="sb-sidenav-menu-nested nav">
-                                                <a class="nav-link" href="401.html">401 Page</a>
-                                                <a class="nav-link" href="404.html">404 Page</a>
-                                                <a class="nav-link" href="500.html">500 Page</a>
-                                            </nav>
-                                        </div>
+                                <div class="collapse" id="collapseTickets" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="Create">Create Ticket +</a>
+                                        @if (!User.IsInRole(nameof(Roles.Admin)))
+                                        {
+                                            <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="MyTickets">My Tickets</a>
+                                        }
+
+                                        <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="AllTickets">All Tickets</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="ArchivedTickets">Archived Tickets</a>
+                                    
+                                        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                        {
+                                            <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="UnassignedTickets">Unassigned Tickets</a>
+                                        }
                                     </nav>
                                 </div>
-                                <div class="sb-sidenav-menu-heading">Addons</div>
-                                <a class="nav-link" href="charts.html">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                    Charts
+                                <!-- Notifications -->
+                                <a asp-area="" asp-controller="Notifications" asp-action="Index" class="nav-link">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
+                                    Notifications
                                 </a>
-                                <a class="nav-link" href="tables.html">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                    Tables
+
+                                <!-- Site Admin Tools -->
+                                <div class="sb-sidenav-menu-heading">Tools</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSiteAdminTools" aria-expanded="false" aria-controls="collapseSiteAdminTools">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                                    Site Admin Tools
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
+                                <div class="collapse" id="collapseSiteAdminTools" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a asp-controller="Companies" asp-action="Index" class="nav-link">Companies</a>
+                                    </nav>
+                                </div>
+
                             </div>
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        @btUser.FullName
                     </div>
                 }
 
