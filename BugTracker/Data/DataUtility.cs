@@ -75,6 +75,7 @@ namespace BugTracker.Data
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
+            await roleManager.CreateAsync(new IdentityRole(Roles.SiteAdmin.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.ProjectManager.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Developer.ToString()));
@@ -218,8 +219,37 @@ namespace BugTracker.Data
 
         public static async Task SeedDefaultUsersAsync(UserManager<BTUser> userManager)
         {
-            //Seed Default Admin User
+            //Seed Default Site Admin User
             var defaultUser = new BTUser
+            {
+                UserName = "btsiteadmin@bugtracker.com",
+                Email = "btsiteadmin@bugtracker.com",
+                FirstName = "Jon",
+                LastName = "Sitemanager",
+                EmailConfirmed = true,
+                CompanyId = company1Id
+            };
+            try
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, Roles.SiteAdmin.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Admin User.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            //Seed Default Admin User
+            defaultUser = new BTUser
             {
                 UserName = "btadmin1@bugtracker.com",
                 Email = "btadmin1@bugtracker.com",

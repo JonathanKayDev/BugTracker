@@ -135,18 +135,21 @@
                                     Notifications
                                 </a>
 
-                                <!-- Site Admin Tools -->
-                                <div class="sb-sidenav-menu-heading">Tools</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSiteAdminTools" aria-expanded="false" aria-controls="collapseSiteAdminTools">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
-                                    Site Admin Tools
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseSiteAdminTools" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a asp-controller="Companies" asp-action="Index" class="nav-link">Companies</a>
-                                    </nav>
-                                </div>
+                                @if (User.IsInRole(nameof(Roles.SiteAdmin)))
+                                {
+                                    <!-- Site Admin Tools -->
+                                    <div class="sb-sidenav-menu-heading">Tools</div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSiteAdminTools" aria-expanded="false" aria-controls="collapseSiteAdminTools">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                                        Site Admin Tools
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="collapseSiteAdminTools" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a asp-controller="Companies" asp-action="Index" class="nav-link">Companies</a>
+                                        </nav>
+                                    </div>
+                                }
 
                             </div>
                     </div>
