@@ -220,11 +220,10 @@ namespace BugTracker.Controllers
         {
             BTUser btUser = await _userManager.GetUserAsync(User);
 
+            // Check if Demo User
             if (await _userManager.IsInRoleAsync(btUser, nameof(Roles.DemoUser)))
             {
-                //return RedirectToPage("~/Identity/Account/AccessDenied");
                 return new RedirectResult("~/Identity/Account/AccessDenied");
-                //return RedirectToAction("AccessDenied", "Account", "Identity");
             }
 
             if (ModelState.IsValid)
