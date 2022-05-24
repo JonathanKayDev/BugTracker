@@ -69,7 +69,11 @@
                                     <div class="sb-nav-link-icon"><i class="fas fa-house-user"></i></div>
                                     Dashboard
                                 </a>
-                                <div class="sb-sidenav-menu-heading">Interface</div>
+                                <a asp-controller="Companies" asp-action="Details" asp-route-id="@btUser.CompanyId" class="nav-link">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>
+                                    Company
+                                </a>
+                                <div class="sb-sidenav-menu-heading">Task Interface</div>
                                 <!-- Projects -->
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProjects" aria-expanded="false" aria-controls="collapseProjects">
                                     <div class="sb-nav-link-icon"><i class="fas fa-folder-open"></i></div>

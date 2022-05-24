@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using BugTracker.Extensions;
 
 namespace BugTracker.Controllers
 {
@@ -16,7 +18,7 @@ namespace BugTracker.Controllers
     public class CompaniesController : Controller
     {
         #region Properties
-        private readonly ApplicationDbContext _context; 
+        private readonly ApplicationDbContext _context;
         #endregion
 
         #region Constructor
@@ -27,6 +29,7 @@ namespace BugTracker.Controllers
         #endregion
 
         #region Index
+        [Authorize(Roles = "SiteAdmin")]
         // GET: Companies
         public async Task<IActionResult> Index()
         {
@@ -38,7 +41,10 @@ namespace BugTracker.Controllers
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            // Do not allow user to view other companies
+            if (id == null || id != companyId)
             {
                 return NotFound();
             }
@@ -56,6 +62,7 @@ namespace BugTracker.Controllers
 
         #region Create
         // GET: Companies/Create
+        [Authorize(Roles = "SiteAdmin")]
         public IActionResult Create()
         {
             return View();
@@ -64,6 +71,7 @@ namespace BugTracker.Controllers
         // POST: Companies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "SiteAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Company company)
@@ -80,9 +88,13 @@ namespace BugTracker.Controllers
 
         #region Edit
         // GET: Companies/Edit/5
+        [Authorize(Roles = "SiteAdmin,Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            // Do not allow user to view other companies
+            if (id == null || id != companyId)
             {
                 return NotFound();
             }
@@ -92,12 +104,14 @@ namespace BugTracker.Controllers
             {
                 return NotFound();
             }
+
             return View(company);
         }
 
         // POST: Companies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "SiteAdmin,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Company company)
@@ -132,6 +146,7 @@ namespace BugTracker.Controllers
         #endregion
 
         #region Delete
+        [Authorize(Roles = "SiteAdmin")]
         // GET: Companies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -151,6 +166,7 @@ namespace BugTracker.Controllers
         }
 
         // POST: Companies/Delete/5
+        [Authorize(Roles = "SiteAdmin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
