@@ -171,16 +171,16 @@ namespace BugTracker.Controllers
             };
 
             //Bar Two
-            PlotlyBar barTwo = new()
-            {
-                X = projects.Select(p => p.Name).ToArray(),
-                Y = projects.Select(async p => (await _projectService.GetProjectMembersByRoleAsync(p.Id, nameof(Roles.Developer))).Count).Select(c => c.Result).ToArray(),
-                Name = "Developers",
-                Type = "bar"
-            };
+            //PlotlyBar barTwo = new()
+            //{
+            //    X = projects.Select(p => p.Name).ToArray(),
+            //    Y = projects.Select(async p => (await _projectService.GetProjectMembersByRoleAsync(p.Id, nameof(Roles.Developer))).Count).Select(c => c.Result).ToArray(),
+            //    Name = "Developers",
+            //    Type = "bar"
+            //};
 
             barData.Add(barOne);
-            barData.Add(barTwo);
+            //barData.Add(barTwo);
 
             plotlyData.Data = barData;
 
