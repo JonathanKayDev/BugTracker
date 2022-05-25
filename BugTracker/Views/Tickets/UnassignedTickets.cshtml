@@ -1,19 +1,23 @@
 ﻿@model IEnumerable<BugTracker.Models.Ticket>
 @using BugTracker.Models.Enums
 
+@{
+    ViewData["Title"] = "Unassigned Tickets";
+}
 
 
+<h1>Unassigned Tickets</h1>
 
-<div class="col-md-12 col">
-    <div class="mt-5 bg-secondary">
-        <div class="card m-1 p-2">
-            <div class="header">
-                <h2>Unassigned Tickets</h2>
-            </div>
-            <div class="body">
-                <div class="table-responsive" style="overflow-y:auto;height:600px;">
-                    <table class="table table-hover">
-                        <thead class="">
+<div class="col">
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Unassigned Tickets
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="datatablesUnassignedTickets">
+                        <thead>
                             <tr>
                                 @* Table header *@
                                 <th>Title</th>
@@ -60,11 +64,9 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
-                </div>
-
+                </table>
             </div>
         </div>
-
     </div>
 </div>
+

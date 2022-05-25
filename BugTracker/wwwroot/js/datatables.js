@@ -37,4 +37,14 @@ window.addEventListener('DOMContentLoaded', event => {
         new simpleDatatables.DataTable(datatablesAllTickets);
     }
 
+    const datatablesArchivedTickets = document.getElementById('datatablesArchivedTickets');
+    if (datatablesArchivedTickets) {
+        new simpleDatatables.DataTable(datatablesArchivedTickets);
+    }
+
+    const datatablesUnassignedTickets = document.getElementById('datatablesUnassignedTickets');
+    if (datatablesUnassignedTickets) {
+        new simpleDatatables.DataTable(datatablesUnassignedTickets);
+    }
+
 });

@@ -71,7 +71,7 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Title)
+                                    <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none">@item.Title</a>
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Description)
