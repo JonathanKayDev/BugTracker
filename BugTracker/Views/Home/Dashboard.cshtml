@@ -49,10 +49,10 @@
 	<div classxfont-weighteighteightgetainer-fluid">
 
 		<!-- Info Pills -->
-		<div class="row mt-2">
-			<div class="col-lg-3 col-md-6 col-sm-6">
+		<div class="row mt-2 gy-2 gx-4">
+			<div class="col-sm-12 col-md-4">
 				<a asp-action="AllProjects" asp-controller="Projects" style="text-decoration:none">
-					<div class="card text-center bg-info">
+					<div class="card text-center bg-success">
 						<div class="body">
 							<div class="p-15 text-light">
 								<h3>@Model.Projects.Where(p => p.StartDate < DateTime.Now && p.EndDate > DateTime.Now).Count()</h3>
@@ -62,9 +62,9 @@
 					</div>
 				</a>
 			</div>
-			<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="col-sm-12 col-md-4">
 				<a asp-action="AllTickets" asp-controller="Tickets" style="text-decoration:none">
-					<div class="card text-center bg-secondary">
+					<div class="card text-center bg-primary">
 						<div class="body">
 							<div class="p-15 text-light">
 
@@ -75,10 +75,10 @@
 					</div>
 				</a>
 			</div>
-			<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="col-sm-12 col-md-4">
 				<div class="card text-center bg-warning">
 					<div class="body">
-						<div class="p-15 text-light">
+						<div class="text-light">
 							<h3>@Model.Tickets.Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).Count()</h3>
 							<span>Unassigned Tickets</span>
 						</div>
@@ -88,10 +88,10 @@
 		</div>
 
 
-		<div class="row mt-4 gy-2 gx-2">
+		<div class="row mt-4 gy-2 gx-4">
 			<!-- Chart 1 Tickets by Priority -->
-			<div class="col-12 col-md">
-				<div class="card-header">
+			<div class="col-12 col-md-6">
+				<div class="card-header text-center">
 					Tickets by Priority
 				</div>
 				<div class="card-body">
@@ -99,8 +99,8 @@
 				</div>
 			</div>
 			<!-- Chart 2 Tickets by Status-->
-			<div class="col-12 col-md">
-				<div class="card-header">
+			<div class="col-12 col-md-6">
+				<div class="card-header text-center">
 					Tickets by Status
 				</div>
 				<div class="card-body">
@@ -126,16 +126,20 @@
 	<div class="mt-5 ">
 		<div class="row">
 			@* Projects Table *@
+            @{
+                string projectPriorityFormat = "bg-dark";
+            }
 			<div class="col">
-				<div class="bg-secondary">
+				<div class="">
 					<div class="card m-1 p-2">
 						<div class="card-header">
-							<h2>Projects</h2>
+							<i class="fas fa-table me-1"></i>
+							Projects
 						</div>
 						<div class="card-body">
 							<div class="table-responsive" style="overflow-y:auto;height:600px;">
-								<table class="table table-hover">
-									<thead class="">
+								<table id="datatablesProjects" class="table table-hover">
+									<thead>
 										<tr>
 											@* Table header *@
 											<th>Name</th>
@@ -149,13 +153,30 @@
 										@* Table body *@
 										@foreach (var project in Model.Projects.OrderByDescending(p => p.EndDate))
 										{
+                                            if (project.ProjectPriority?.Name == "Low")
+                                            {
+                                                projectPriorityFormat = "bg-secondary";
+                                            }
+                                            else if (project.ProjectPriority?.Name == "Medium")
+                                            {
+                                                projectPriorityFormat = "bg-info";
+                                            }
+                                            else if (project.ProjectPriority?.Name == "High")
+                                            {
+                                                projectPriorityFormat = "bg-warning";
+                                            }
+                                            else if (project.ProjectPriority?.Name == "Urgent")
+                                            {
+                                                projectPriorityFormat = "bg-danger";
+                                            }
+
 											<tr>
-												<td><a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id" style="color:black"><strong>@project.Name</strong></a></td>
+												<td><a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id" style="color:black">@project.Name</a></td>
 												<td><span style="font-size:small">@project.StartDate.ToString("dd-MMM-yyyy")</span></td>
 												<td><span style="font-size:small">@project.EndDate.ToString("dd-MMM-yyyy")</span></td>
-												<td><span class="badge bg-dark">@project.ProjectPriority?.Name</span></td>
+												<td><span class="badge @projectPriorityFormat">@project.ProjectPriority?.Name</span></td>
 												<td>
-													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id"><i class="fs-5 bi-justify"></i></a>
+													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id"><i class="fas fa-align-justify"></i></a>
 												</td>
 											</tr>
 										}
@@ -163,21 +184,23 @@
 								</table>
 							</div>
 						</div>
-						<div class="card-footer">
-						</div>
 					</div>
 				</div>
 			</div>
 			@* Tickets Table *@
+            @{
+                string ticketPriorityFormat = "bg-dark";
+            }
 			<div class="col">
-				<div class="bg-secondary">
+				<div class="">
 					<div class="card m-1 p-2">
 						<div class="card-header">
-							<h2>Tickets</h2>
+							<i class="fas fa-table me-1"></i>
+							Tickets
 						</div>
 						<div class="card-body">
 							<div class="table-responsive" style="overflow-y:auto;height:600px;">
-								<table class="table table-hover">
+								<table id="datatablesTickets" class="table table-hover">
 									<thead class="">
 										<tr>
 											@* Table header *@
@@ -193,6 +216,23 @@
 										@* Table body *@
 										@foreach (var ticket in Model.Tickets.OrderByDescending(d => d.Created))
 										{
+                                            if (ticket.TicketPriority?.Name == "Low")
+                                            {
+                                                ticketPriorityFormat = "bg-secondary";
+                                            }
+                                            else if (ticket.TicketPriority?.Name == "Medium")
+                                            {
+                                                ticketPriorityFormat = "bg-info";
+                                            }
+                                            else if (ticket.TicketPriority?.Name == "High")
+                                            {
+                                                ticketPriorityFormat = "bg-warning";
+                                            }
+                                            else if (ticket.TicketPriority?.Name == "Urgent")
+                                            {
+                                                ticketPriorityFormat = "bg-danger";
+                                            }
+
 											<tr>
 												<td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="color:black"><strong>@ticket.Title</strong></a> </td>
 												<td>
@@ -213,18 +253,16 @@
 												{
 													<td><span class="badge bg-secondary rounded-pill">@ticket.TicketStatus.Name </span></td>
 												}
-												<td><span class="badge bg-dark">@ticket.TicketPriority.Name </span></td>
+												<td><span class="badge @ticketPriorityFormat">@ticket.TicketPriority.Name </span></td>
 												<td>@ticket.Created.ToString("dd-MMM-yyyy")</td>
 												<td>
-													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fs-5 bi-justify"></i></a>
+													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fas fa-align-justify"></i></a>
 												</td>
 											</tr>
 										}
 									</tbody>
 								</table>
 							</div>
-						</div>
-						<div class="card-footer">
 						</div>
 					</div>
 				</div>
