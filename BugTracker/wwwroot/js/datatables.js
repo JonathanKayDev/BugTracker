@@ -27,6 +27,11 @@ window.addEventListener('DOMContentLoaded', event => {
         new simpleDatatables.DataTable(datatablesArchivedProjects);
     }
 
+    const datatablesUnassignedProjects = document.getElementById('datatablesUnassignedProjects');
+    if (datatablesUnassignedProjects) {
+        new simpleDatatables.DataTable(datatablesUnassignedProjects);
+    }
+
     const datatablesMyTickets = document.getElementById('datatablesMyTickets');
     if (datatablesMyTickets) {
         new simpleDatatables.DataTable(datatablesMyTickets);

@@ -61,7 +61,7 @@
     --bs-body-font-weight: 400;
     --bs-body-line-height: 1.5;
     --bs-body-color: #212529;
-    --bs-body-bg: #dee2e6;
+    --bs-body-bg: #dce2f2;
 }
 
 *,
@@ -4560,7 +4560,7 @@ textarea.form-control-lg {
 .card-body {
     flex: 1 1 auto;
     padding: 0.5rem 0.5rem;
-    background-color: #ccd3e6;
+    background-color: #f2f4fa;
     border-radius: 0rem 0rem 0.25rem 0.25rem;
 }
 
@@ -4584,7 +4584,7 @@ textarea.form-control-lg {
 .card-header {
     padding: 0.5rem 1rem;
     margin-bottom: 0;
-    background-color: #c1cae0;
+    background-color: #e9edf7;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem 0.25rem 0rem 0rem;
 }
