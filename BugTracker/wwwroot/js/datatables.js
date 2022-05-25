@@ -11,4 +11,14 @@ window.addEventListener('DOMContentLoaded', event => {
     if (datatablesTickets) {
         new simpleDatatables.DataTable(datatablesTickets);
     }
+
+    const datatablesMyProjects = document.getElementById('datatablesMyProjects');
+    if (datatablesMyProjects) {
+        new simpleDatatables.DataTable(datatablesMyProjects);
+    }
+
+    const datatablesAllProjects = document.getElementById('datatablesAllProjects');
+    if (datatablesAllProjects) {
+        new simpleDatatables.DataTable(datatablesAllProjects);
+    }
 });
