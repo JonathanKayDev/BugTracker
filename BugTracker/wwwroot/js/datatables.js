@@ -21,4 +21,20 @@ window.addEventListener('DOMContentLoaded', event => {
     if (datatablesAllProjects) {
         new simpleDatatables.DataTable(datatablesAllProjects);
     }
+
+    const datatablesArchivedProjects = document.getElementById('datatablesArchivedProjects');
+    if (datatablesArchivedProjects) {
+        new simpleDatatables.DataTable(datatablesArchivedProjects);
+    }
+
+    const datatablesMyTickets = document.getElementById('datatablesMyTickets');
+    if (datatablesMyTickets) {
+        new simpleDatatables.DataTable(datatablesMyTickets);
+    }
+
+    const datatablesAllTickets = document.getElementById('datatablesAllTickets');
+    if (datatablesAllTickets) {
+        new simpleDatatables.DataTable(datatablesAllTickets);
+    }
+
 });

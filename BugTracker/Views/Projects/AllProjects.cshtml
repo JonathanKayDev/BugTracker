@@ -32,7 +32,7 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Name)
+                                Name
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Description)
@@ -56,7 +56,7 @@
                                 </th>
                             }
                             <th>
-                                @Html.DisplayNameFor(model => model.ProjectPriority)
+                                Priority
                             </th>
                             <th>
                                 Actions
@@ -105,7 +105,6 @@
                                 <td>
 
                                     <a style="text-decoration: none" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                    <br>
 
                                     @{
                                         bool isPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == btUser.Id;
@@ -113,9 +112,9 @@
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || isPM)
                                     {
-                                        <a style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                        <text> | </text><a style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id">Edit</a> <text> | </text>
 
-                                        @if (item.Archived)
+                                        if (item.Archived)
                                         {
                                             <a style="text-decoration: none" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
                                         }
