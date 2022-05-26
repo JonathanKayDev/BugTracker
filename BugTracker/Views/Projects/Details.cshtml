@@ -20,15 +20,14 @@
 
 <div>
     <div class="container-fluid">
-        <div class="row">
-            <!-- Details -->
-            <div class="col-md-12 col">
-                <div class="row col-cols-2 mt-5">
+        <!-- Details -->
+        <div class="row mt-2">
+            <div class="col-12 col-md-8">
                     <div class="card col shadow">
                         <div class="card-header">
+                            <strong>@Model.Name</strong>
                         </div>
                         <div class="card-body">
-                            <h5>@Model.Name</h5>
                             <p>@Model.Description</p>
                             <div class="progress-container progress-info m-b-25">
                                 <span class="progress-badge" style="font-size:small">Project Status</span>
@@ -44,12 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card col shadow">
-                        <div class="card-header">
-                        </div>
-                        <div class="card-body">
+                            <hr />
                             <ul class=" list-unstyled basic-list">
                                 <li>Start Date: <span class="">@Model.StartDate.ToString("dd MMM, yyyy")</span></li>
                                 <li>Deadline: <span class="">@Model.EndDate.ToString("dd MMM, yyyy")</span></li>
@@ -66,13 +60,14 @@
                             </ul>
                         </div>
                     </div>
-                </div>
             </div>
-            <div class="col-md-4 col mt-5 ">
-                <!-- Project Manager -->
+        </div>
+        <div class="row">
+            <!-- Project Manager -->
+            <div class="col-12 col-md-4 col mt-5 ">
                 <div class="card col shadow">
                     <div class="card-header">
-                        <h2>Project Manager</h2>
+                        <strong>Project Manager</strong>
                     </div>
                     <div class="card-body" style="overflow-y:auto;height:300px;">
                         @* if() logic for Avatar/Default etc *@
@@ -116,11 +111,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col mt-5 ">
-                <!-- Project Team -->
-                <div class="card col shadow">
+            <!-- Project Team -->
+            <div class="col-12 col-md-4 col mt-5 ">
+                <div class="card shadow">
                     <div class="card-header">
-                        <h2>Project Team</h2>
+                        <strong>Project Team</strong>
                     </div>
                     <div class="card-body" style="overflow-y:auto;height:300px;">
                         <ul class="right_chat list-unstyled mb-0">
@@ -151,10 +146,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col mt-5 ">
+            <!-- Project Activity -->
+            <div class="col-12 col-md-4 col mt-5 ">
                 <div class="card shadow">
                     <div class="card-header">
-                        <h2>Project Activity</h2>
+                        <strong>Project Activity</strong>
                     </div>
                     <div class="card-body" style="overflow-y:auto;height:300px;">
                         @* Project Activity loop *@
@@ -176,11 +172,15 @@
 
                 </div>
             </div>
+
+        </div>
+        <div class="row">
+            <!-- Tickets Table -->
             <div class="col mt-4 mb-4">
                 <div class="card shadow">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Tickets
+                        <strong>Tickets</strong>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
