@@ -88,10 +88,10 @@
                     <div class="card-header">
                         <strong>Comments</strong>
                     </div>
-                    <div class="card-body" style="overflow-y:auto;max-height:600px;">
+                    <div class="card-body" style="overflow-y:auto;max-height:300px;">
                         <ul class="right_chat list-unstyled mb-0">
                             @*Loop to show comments made for the Ticket*@
-                            @foreach (TicketComment comment in Model.Comments)
+                            @foreach (TicketComment comment in Model.Comments.Reverse())
                             {
                                 <li class="online mb-4">
                                     <div class="media">
@@ -109,7 +109,7 @@
                                         <div class="media-body">
                                             <span class="text-muted" style="font-size:x-small;">
                                                 @@ @comment.User.FullName
-                                                <small class="float-right">@comment.Created.ToString("dd/mm/yyyy hh:ss tt")</small>:
+                                                <small class="float-right">@comment.Created.ToString("dd/MM/yyyy hh:ss tt")</small>:
                                             </span>
                                         </div>
                                         <span class="message text-primary">@Html.Raw(comment.Comment)</span>
@@ -220,7 +220,7 @@
                 <div class="card-header">
                     <strong>Ticket Activity</strong>
                 </div>
-                <div class="card-body" style="overflow-y:auto;max-height:1000px;">
+                <div class="card-body ticket-activity">
                     @*Loop to show the history entries for the Ticket*@
                     @foreach (TicketHistory tH in Model.History)
                     {

@@ -22,6 +22,11 @@ body {
     overflow-y:auto;
 }
 
+.ticket-activity {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 /*Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) {
 
@@ -38,4 +43,10 @@ body {
         min-height: 635px;
         max-height: 635px;
     }
+
+    .ticket-activity {
+        min-height: 600px;
+        max-height: 1150px;
+    }
+
 }
