@@ -35,6 +35,7 @@ body {
 /*Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) {
     .project-activity {
-        max-height: 635px !important;
+        min-height: 635px;
+        max-height: 635px;
     }
 }
