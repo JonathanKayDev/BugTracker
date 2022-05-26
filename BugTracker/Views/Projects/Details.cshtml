@@ -20,11 +20,11 @@
 
 <div>
     <div class="container-fluid">
-        <div class="row gy-2">
+        <div class="row">
             <div class="col-md-12 col">
-                <div class="row col-cols-2 mt-5 bg-secondary">
-                    <div class="card col m-1 p-2">
-                        <div class="body">
+                <div class="row col-cols-2 mt-5">
+                    <div class="card col shadow">
+                        <div class="card-body">
                             @* Project Name *@
                             <h5>@Model.Name</h5>
                             @* Project Description *@
@@ -47,8 +47,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card col m-1 p-2">
-                        <div class="body">
+                    <div class="card col shadow">
+                        <div class="card-body">
                             <ul class=" list-unstyled basic-list">
                                 <li>Start Date: <span class="">@Model.StartDate.ToString("dd MMM, yyyy")</span></li>
                                 <li>Deadline: <span class="">@Model.EndDate.ToString("dd MMM, yyyy")</span></li>
@@ -56,11 +56,11 @@
                                 @* if() logic *@
                                 @if (today < end && today >= start)
                                 {
-                                    <li>Status:<span class="">Active</span></li>
+                                    <li>Status: <span class="">Active</span></li>
                                 }
                                 else
                                 {
-                                    <li>Status:<span class="">Inactive</span></li>
+                                    <li>Status: <span class="">Inactive</span></li>
                                 }
                             </ul>
                         </div>
