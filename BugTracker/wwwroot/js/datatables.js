@@ -52,4 +52,9 @@ window.addEventListener('DOMContentLoaded', event => {
         new simpleDatatables.DataTable(datatablesUnassignedTickets);
     }
 
+    const datatablesPDTickets = document.getElementById('datatablesPDTickets');
+    if (datatablesPDTickets) {
+        new simpleDatatables.DataTable(datatablesPDTickets);
+    }
+
 });
