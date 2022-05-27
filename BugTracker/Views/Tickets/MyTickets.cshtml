@@ -7,18 +7,18 @@
 <h1>My Tickets</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create Ticket +</a>
+    <a class="btn btn-sm btn-primary" asp-action="Create">Create Ticket +</a>
 </p>
 
-<div class="col">
-    <div class="card">
+<div class="col mt-2 mb-4">
+    <div class="card shadow">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            My Tickets
+            <i class="fas fa-table me-1 text-secondary"></i>
+            <strong>My Tickets</strong>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatablesMyTickets">
+            <div class="">
+                <table id="datatablesMyTickets" class="table table-striped dt-responsive w-100">
                     <thead>
                         <tr>
                             <th>
@@ -97,16 +97,16 @@
                                     @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    @*                @if (item.Archived)
-                                        {
-                                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                                        }
-                                        else
-                                        {
-                                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                                        }*@
+                                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-align-justify"></i></a> |
+                                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a> |
+                                    @if (item.Archived)
+                                    {
+                                        <a class="text-success" asp-action="restore" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="archive" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
+                                    }
 
                                 </td>
                             </tr>

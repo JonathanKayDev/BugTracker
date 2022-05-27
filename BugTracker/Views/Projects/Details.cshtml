@@ -183,12 +183,12 @@
     <div class="col mt-4 mb-4">
         <div class="card shadow">
             <div class="card-header">
-                <i class="fas fa-table me-1"></i>
+                <i class="fas fa-table me-1 text-secondary"></i>
                 <strong>Tickets</strong>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table id="datatablesPDTickets">
+                <div class="">
+                    <table id="datatablesPDTickets" class="table table-striped dt-responsive w-100">
                         <thead class="">
                             <tr>
                                 @* Table header *@
@@ -215,7 +215,7 @@
                                         {
                                             if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
                                             {
-                                                <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@ticket.Id">Assign Dev</a>
+                                                <a class="btn btn-sm btn-info text-white" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@ticket.Id">Assign Dev</a>
                                             }
 
                                         }
@@ -231,15 +231,15 @@
                                     <td><span class="badge-warning">@ticket.TicketPriority.Name </span></td>
                                     <td>@ticket.Created.ToString("dd-MMM-yyyy")</td>
                                     <td>
-                                        <a class="btn btn-sm btn-outline-info" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fas fa-align-justify"></i></a>
+                                        <a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fas fa-align-justify"></i></a>
                                         @if (ticket.DeveloperUserId == btUser.Id || ticket.OwnerUserId == btUser.Id || (projectManager?.Id == btUser.Id) || User.IsInRole(nameof(Roles.Admin)))
                                         {
-                                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="far fa-edit"></i></a>
+                                            <text> | </text><a asp-action="Edit" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="far fa-edit"></i></a><text> | </text>
                                         }
 
                                         @if (User.IsInRole("Admin") || (projectManager?.Id == btUser.Id))
                                         {
-                                            <a class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+                                            <a asp-controller="Tickets" asp-action="Archive" asp-route-id="@ticket.Id"><i class="far fa-trash-alt"></i></a>
                                         }
                                     </td>
                                 </tr>

@@ -2,96 +2,218 @@ window.addEventListener('DOMContentLoaded', event => {
     // Simple-DataTables
     // https://github.com/fiduswriter/Simple-DataTables/wiki
 
-    const datatablesProjects = document.getElementById('datatablesProjects');
-    if (datatablesProjects) {
-        new simpleDatatables.DataTable(datatablesProjects);
-    }
+    $('#datatablesProjects').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [1, 2, 3, 4] },
+            { className: 'dt-body-center', targets: [1, 2, 3, 4] }
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 5
+    });
 
-    const datatablesTickets = document.getElementById('datatablesTickets');
-    if (datatablesTickets) {
-        new simpleDatatables.DataTable(datatablesTickets);
-    }
+    $('#datatablesTickets').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [3, 4, 5] },
+            { className: 'dt-body-center', targets: [3, 4, 5] }
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 5
+    });
 
-    const datatablesMyProjects = document.getElementById('datatablesMyProjects');
-    if (datatablesMyProjects) {
-        new simpleDatatables.DataTable(datatablesMyProjects);
-    }
+    $('#datatablesMyProjects').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [2, 3, 4, 5, 6, 7] },
+            { className: 'dt-body-center', targets: [2, 3, 4, 5, 6, 7] }
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
+    });
 
-    //const datatablesAllProjects = document.getElementById('datatablesAllProjects');
-    //if (datatablesAllProjects) {
-    //    new simpleDatatables.DataTable(datatablesAllProjects);
-    //}
     $('#datatablesAllProjects').DataTable({
         columnDefs: [
             { className: 'dt-head-center', targets: [2, 3, 4, 5, 6, 7] },
             { className: 'dt-body-center', targets: [2, 3, 4, 5, 6, 7] }
-        ]
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
     });
 
-    //const datatablesArchivedProjects = document.getElementById('datatablesArchivedProjects');
-    //if (datatablesArchivedProjects) {
-    //    new simpleDatatables.DataTable(datatablesArchivedProjects);
-    //}
     $('#datatablesArchivedProjects').DataTable({
         columnDefs: [
             { className: 'dt-head-center', targets: [2, 3, 4, 5, 6] },
             { className: 'dt-body-center', targets: [2, 3, 4, 5, 6] }
-        ]
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
     });
 
-    //const datatablesUnassignedProjects = document.getElementById('datatablesUnassignedProjects');
-    //if (datatablesUnassignedProjects) {
-    //    new simpleDatatables.DataTable(datatablesUnassignedProjects);
-    //}
     $('#datatablesUnassignedProjects').DataTable({
         columnDefs: [
             { className: 'dt-head-center', targets: [2, 3, 4, 5, 6, 7] },
             { className: 'dt-body-center', targets: [2, 3, 4, 5, 6, 7] }
-        ]
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
     });
 
-    const datatablesMyTickets = document.getElementById('datatablesMyTickets');
-    if (datatablesMyTickets) {
-        new simpleDatatables.DataTable(datatablesMyTickets);
-    }
-
-    //const datatablesAllTickets = document.getElementById('datatablesAllTickets');
-    //if (datatablesAllTickets) {
-    //    new simpleDatatables.DataTable(datatablesAllTickets);
+    //const datatablesMyTickets = document.getElementById('datatablesMyTickets');
+    //if (datatablesMyTickets) {
+    //    new simpleDatatables.DataTable(datatablesMyTickets);
     //}
+    $('#datatablesMyTickets').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [2, 3, 4, 6, 7, 8, 9, 10, 11] },
+            { className: 'dt-body-center', targets: [2, 3, 4, 6, 7, 8, 9, 10, 11] }
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
+    });
+
     $('#datatablesAllTickets').DataTable({
         columnDefs: [
             { className: 'dt-head-center', targets: [2, 3, 4, 6, 7, 8, 9, 10, 11] },
             { className: 'dt-body-center', targets: [2, 3, 4, 6, 7, 8, 9, 10, 11] }
-        ]
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
     });
 
-    //const datatablesArchivedTickets = document.getElementById('datatablesArchivedTickets');
-    //if (datatablesArchivedTickets) {
-    //    new simpleDatatables.DataTable(datatablesArchivedTickets);
-    //}
     $('#datatablesArchivedTickets').DataTable({
         columnDefs: [
             { className: 'dt-head-center', targets: [2, 3, 5, 6, 7, 8] },
             { className: 'dt-body-center', targets: [2, 3, 5, 6, 7, 8] }
-        ]
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
     });
 
-    //const datatablesUnassignedTickets = document.getElementById('datatablesUnassignedTickets');
-    //if (datatablesUnassignedTickets) {
-    //    new simpleDatatables.DataTable(datatablesUnassignedTickets);
-    //}
     $('#datatablesUnassignedTickets').DataTable({
         columnDefs: [
             { className: 'dt-head-center', targets: [1, 2, 3, 4, 5] },
             { className: 'dt-body-center', targets: [1, 2, 3, 4, 5] }
-        ]
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
     });
 
-    const datatablesPDTickets = document.getElementById('datatablesPDTickets');
-    if (datatablesPDTickets) {
-        new simpleDatatables.DataTable(datatablesPDTickets);
-    }
+    $('#datatablesPDTickets').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [3, 4, 5] },
+            { className: 'dt-body-center', targets: [3, 4, 5] }
+        ],
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
+    });
 
 });
 

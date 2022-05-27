@@ -21,7 +21,7 @@
 }
 
 <div class="col mt-2 mb-4">
-    <div class="card">
+    <div class="card shadow">
         <div class="card-header">
             <i class="fas fa-table me-1 text-secondary"></i>
             <strong>All Projects</strong>
@@ -112,7 +112,7 @@
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || isPM)
                                     {
-                                        <text> | </text><a class="text-secondary" style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a><text> | </text>
+                                        <text> | </text><a style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a><text> | </text>
 
                                         if (item.Archived)
                                         {
@@ -120,7 +120,7 @@
                                         }
                                         else
                                         {
-                                            <a class="text-warning" style="text-decoration: none" asp-action="Archive" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
+                                            <a style="text-decoration: none" asp-action="Archive" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                         }
                                     }
                                 </td>

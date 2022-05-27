@@ -136,7 +136,7 @@
 
 	</div>
 
-	<div class="mt-5 ">
+	<div class="mt-5 mb-4">
 		<div class="row">
 			@* Projects Table *@
             @{
@@ -146,12 +146,12 @@
 				<div class="">
 					<div class="card shadow">
 						<div class="card-header">
-							<i class="fas fa-table me-1"></i>
-							Projects
+							<i class="fas fa-table me-1 text-secondary"></i>
+							<strong>Projects</strong>
 						</div>
 						<div class="card-body">
-							<div class="table-responsive">
-								<table id="datatablesProjects" class="table table-hover">
+							<div class="">
+								<table id="datatablesProjects" class="table table-striped dt-responsive w-100">
 									<thead>
 										<tr>
 											@* Table header *@
@@ -184,12 +184,12 @@
                                             }
 
 											<tr>
-												<td><a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id" style="color:black">@project.Name</a></td>
+												<td><a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id" style="text-decoration: none">@project.Name</a></td>
 												<td><span style="font-size:small">@project.StartDate.ToString("dd-MMM-yyyy")</span></td>
 												<td><span style="font-size:small">@project.EndDate.ToString("dd-MMM-yyyy")</span></td>
 												<td><span class="badge @projectPriorityFormat">@project.ProjectPriority?.Name</span></td>
 												<td>
-													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id"><i class="fas fa-align-justify"></i></a>
+													<a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id"><i class="fas fa-align-justify"></i></a>
 												</td>
 											</tr>
 										}
@@ -208,12 +208,12 @@
 				<div class="">
 					<div class="card shadow">
 						<div class="card-header">
-							<i class="fas fa-table me-1"></i>
-							Tickets
+							<i class="fas fa-table me-1 text-secondary"></i>
+							<strong>Tickets</strong>
 						</div>
 						<div class="card-body">
-							<div class="table-responsive">
-								<table id="datatablesTickets" class="table table-hover">
+							<div class="">
+								<table id="datatablesTickets" class="table table-striped dt-responsive w-100">
 									<thead class="">
 										<tr>
 											@* Table header *@
@@ -247,7 +247,7 @@
                                             }
 
 											<tr>
-												<td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="color:black">@ticket.Title</a> </td>
+												<td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="text-decoration: none">@ticket.Title</a> </td>
 												<td>
 													@if (ticket.DeveloperUserId != null)
 													{
@@ -269,7 +269,7 @@
 												<td><span class="badge @ticketPriorityFormat">@ticket.TicketPriority.Name </span></td>
 												<td>@ticket.Created.ToString("dd-MMM-yyyy")</td>
 												<td>
-													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fas fa-align-justify"></i></a>
+													<a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fas fa-align-justify"></i></a>
 												</td>
 											</tr>
 										}

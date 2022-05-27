@@ -14,15 +14,15 @@
     </p>
 }
 
-<div class="col">
-    <div class="card">
+<div class="col mt-2 mb-4">
+    <div class="card shadow">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            My Projects
+            <i class="fas fa-table me-1 text-secondary"></i>
+            <strong>My Projects</strong>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatablesMyProjects">
+            <div class="">
+                <table id="datatablesMyProjects" class="table table-striped dt-responsive w-100">
                     <thead>
                         <tr>
                             <th>
@@ -86,20 +86,20 @@
                                 </td>
                                 <td>
 
-                                    <a style="text-decoration: none" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                    <a style="text-decoration: none" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-align-justify"></i></a>
                                     <br>
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
                                     {
-                                        <a style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                        <a style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
 
                                         @if (item.Archived)
                                         {
-                                            <a style="text-decoration: none" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                                            <a class="text-success" style="text-decoration: none" asp-action="Restore" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                         }
                                         else
                                         {
-                                            <a style="text-decoration: none" asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                                            <a style="text-decoration: none" asp-action="Archive" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                         }
                                     }
                                 </td>
