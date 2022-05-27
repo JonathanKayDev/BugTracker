@@ -45,17 +45,17 @@
                         </div>
                         <hr />
                         <ul class=" list-unstyled basic-list">
-                            <li>Start Date: <span class="">@Model.StartDate.ToString("dd MMM, yyyy")</span></li>
-                            <li>Deadline: <span class="">@Model.EndDate.ToString("dd MMM, yyyy")</span></li>
-                            <li>Priority: <span class="">@Model.ProjectPriority?.Name</span></li>
+                            <li><strong>Start Date:</strong> <span class="">@Model.StartDate.ToString("dd MMM, yyyy")</span></li>
+                            <li><strong>Deadline:</strong> <span class="">@Model.EndDate.ToString("dd MMM, yyyy")</span></li>
+                            <li><strong>Priority:</strong> <span class="">@Model.ProjectPriority?.Name</span></li>
                             @* if() logic *@
                             @if (today < end && today >= start)
                             {
-                                <li>Status: <span class="">Active</span></li>
+                                <li><strong>Status:</strong> <span class="">Active</span></li>
                             }
                             else
                             {
-                                <li>Status: <span class="">Inactive</span></li>
+                                <li><strong>Status:</strong> <span class="">Inactive</span></li>
                             }
                         </ul>
                     </div>

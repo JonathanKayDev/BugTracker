@@ -91,6 +91,10 @@
                     <div class="card-body" style="overflow-y:auto;max-height:300px;">
                         <ul class="right_chat list-unstyled mb-0">
                             @*Loop to show comments made for the Ticket*@
+                            @if (Model.Comments.Count == 0)
+                            {
+                                <p class="text-secondary">&nbsp;No Comments</p>
+                            }
                             @foreach (TicketComment comment in Model.Comments.Reverse())
                             {
                                 <li class="online mb-4">
@@ -137,7 +141,7 @@
                                 <div class="form-group">
                                     <textarea asp-for="@(new TicketComment().Comment)" rows="4" class="form-control" required placeholder="Add comment ..."></textarea>
                                 </div>
-                                <button class="btn btn-sm btn-primary">Submit</button>
+                                <button class="btn btn-sm btn-primary mt-2">Submit</button>
                             }
                             else
                             {
@@ -158,6 +162,10 @@
                         <strong>Attachments</strong>
                     </div>
                     <div class="card-body" style="overflow-y:auto;max-height:300px;">
+                        @if (Model.Attachments.Count == 0)
+                            {
+                                <p class="text-secondary">&nbsp;No Attachments</p>
+                            }
                         <div class="container">
                             <div class="row">
                                 @foreach (TicketAttachment item in Model.Attachments)
@@ -200,10 +208,10 @@
                                             Description
                                             <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
                                         </label><br />
-                                        <label class="btn btn-outline-primary btn-sm">
+                                        <label class="btn btn-outline-primary btn-sm mt-2">
                                             <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" class="form-control-file" />
                                         </label>
-                                        <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm mt-2">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -221,6 +229,10 @@
                     <strong>Ticket Activity</strong>
                 </div>
                 <div class="card-body ticket-activity">
+                    @if (Model.History.Count == 0)
+                        {
+                            <p class="text-secondary">&nbsp;No Activity</p>
+                        }
                     @*Loop to show the history entries for the Ticket*@
                     @foreach (TicketHistory tH in Model.History)
                     {

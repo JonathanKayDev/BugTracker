@@ -27,14 +27,20 @@ body {
     overflow-y: auto;
 }
 
+.card-body {
+    font-size: 0.9em;
+    color: darkslategray;
+}
+
 /* DataTables JK custom*/
 table.dataTable.table-striped > tbody > tr.odd > * {
     box-shadow: inset 0 0 0 9999px rgb(0 0 0 / 2%) !important;
 }
 
 table.dataTable td, th {
-    font-size: 0.9em;
+    /*font-size: 0.9em;*/
     vertical-align: middle;
+    color: darkslategray;
 }
 
 
