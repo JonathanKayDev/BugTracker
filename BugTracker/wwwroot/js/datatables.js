@@ -17,10 +17,16 @@ window.addEventListener('DOMContentLoaded', event => {
         new simpleDatatables.DataTable(datatablesMyProjects);
     }
 
-    const datatablesAllProjects = document.getElementById('datatablesAllProjects');
-    if (datatablesAllProjects) {
-        new simpleDatatables.DataTable(datatablesAllProjects);
-    }
+    //const datatablesAllProjects = document.getElementById('datatablesAllProjects');
+    //if (datatablesAllProjects) {
+    //    new simpleDatatables.DataTable(datatablesAllProjects);
+    //}
+    $('#datatablesAllProjects').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [2, 3, 4, 5, 6, 7] },
+            { className: 'dt-body-center', targets: [2, 3, 4, 5, 6, 7] }
+        ]
+    });
 
     const datatablesArchivedProjects = document.getElementById('datatablesArchivedProjects');
     if (datatablesArchivedProjects) {
@@ -58,3 +64,4 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
