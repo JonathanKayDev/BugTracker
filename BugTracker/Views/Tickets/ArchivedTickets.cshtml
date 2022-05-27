@@ -13,15 +13,15 @@
 
 <h1>Archived Tickets</h1>
 
-<div class="col">
+<div class="col mt-2 mb-4">
     <div class="card">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            Archived Tickets
+            <i class="fas fa-table me-1 text-secondary"></i>
+            <strong>Archived Tickets</strong>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatablesArchivedTickets">
+            <div class="">
+                <table id="datatablesArchivedTickets" class="table table-striped dt-responsive w-100">
                     <thead>
                         <tr>
                             <th>
@@ -82,12 +82,12 @@
                                     @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
                                 </td>
                                 <td>
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-align-justify"></i></a>
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId))
                                     {
                                         <span>|</span>
-                                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                                        <a class="text-success" asp-action="Restore" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                     }
 
                                 </td>

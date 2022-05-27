@@ -10,15 +10,15 @@
     <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
 
-<div class="col">
+<div class="col mt-2 mb-4">
     <div class="card">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            Unassigned Projects
+            <i class="fas fa-table me-1 text-secondary"></i>
+            <strong>Unassigned Projects</strong>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatablesUnassignedProjects">
+            <div class="">
+                <table id="datatablesUnassignedProjects" class="table table-striped dt-responsive w-100">
                     <thead>
                         <tr>
                             <th>
@@ -81,7 +81,7 @@
                                     @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-outline-secondary" asp-action="AssignPM" asp-route-projectId="@item.Id">Add PM</a>
+                                    <a class="btn btn-sm btn-info text-white" asp-action="AssignPM" asp-route-projectId="@item.Id">+ PM</a>
                                 </td>
                             </tr>
                         }

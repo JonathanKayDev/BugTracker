@@ -17,15 +17,15 @@
     <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
 
-<div class="col">
+<div class="col mt-2 mb-4">
     <div class="card">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            All Tickets
+            <i class="fas fa-table me-1 text-secondary"></i>
+            <strong>All Tickets</strong>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatablesAllTickets">
+            <div class="">
+                <table id="datatablesAllTickets" class="table table-striped dt-responsive w-100">
                     <thead>
                         <tr>
                             <th>
@@ -104,24 +104,24 @@
                                     @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
                                 </td>
                                 <td>
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-align-justify"></i></a>
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || item.DeveloperUserId == btUser.Id ||
                                    item.OwnerUserId == btUser.Id ||
                                    await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId))
                                     {
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                        <text> | </text><a asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a><text> | </text>
                                     }
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId))
                                     {
                                         if (item.Archived)
                                         {
-                                            <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                                            <a class="text-success" asp-action="Restore" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                         }
                                         else
                                         {
-                                            <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                                            <a asp-action="Archive" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                         }
                                     }
 

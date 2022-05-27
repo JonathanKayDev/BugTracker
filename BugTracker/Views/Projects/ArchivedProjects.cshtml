@@ -13,15 +13,15 @@
 
 <h1>Archived Projects</h1>
 
-<div class="col">
+<div class="col mt-2 mb-4">
     <div class="card">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            Archived Projects
+            <i class="fas fa-table me-1 text-secondary"></i>
+            <strong>Archived Projects</strong>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatablesArchivedProjects">
+            <div class="">
+                <table id="datatablesArchivedProjects" class="table table-striped dt-responsive w-100">
                     <thead>
                         <tr>
                             <th>
@@ -92,7 +92,7 @@
                                 }
 
                                 <td>
-                                    <a style="text-decoration: none" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a style="text-decoration: none" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-align-justify"></i></a>
 
                                     @{
                                         bool isPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == btUser.Id;
@@ -100,8 +100,8 @@
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || isPM)
                                     {
-                                        <a style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id">Edit</a><text> | </text>
-                                        <a style="text-decoration: none" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                                       <text>  |  </text><a class="text-secondary" style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a><text>  |  </text>
+                                        <a class="text-success" style="text-decoration: none" asp-action="Restore" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                     }
                                 </td>
                             </tr>

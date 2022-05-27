@@ -8,15 +8,15 @@
 
 <h1>Unassigned Tickets</h1>
 
-<div class="col">
+<div class="col mt-2 mb-4">
     <div class="card">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            Unassigned Tickets
+            <i class="fas fa-table me-1 text-secondary"></i>
+            <strong>Unassigned Tickets</strong>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="datatablesUnassignedTickets">
+            <div class="">
+                <table id="datatablesUnassignedTickets" class="table table-striped dt-responsive w-100">
                         <thead>
                             <tr>
                                 @* Table header *@
@@ -33,7 +33,7 @@
                             @foreach (var ticket in Model.OrderByDescending(d => d.Created))
                             {
                                 <tr>
-                                    <td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="color:black"><strong>@ticket.Title</strong></a> </td>
+                                    <td><a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id" style="text-decoration: none">@ticket.Title</a> </td>
                                     <td>
                                         @if (ticket.DeveloperUserId != null)
                                         {
@@ -43,7 +43,7 @@
                                         {
                                             if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
                                             {
-                                                <a class="btn btn-xs btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@ticket.Id">Assign Dev</a>
+                                                <a class="btn btn-xs btn-info text-white" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@ticket.Id">Assign Dev</a>
                                             }
 
                                         }
@@ -59,7 +59,7 @@
                                     <td><span class="badge-warning">@ticket.TicketPriority.Name </span></td>
                                     <td>@ticket.Created.ToString("dd-MMM-yyyy")</td>
                                     <td>
-                                        <a class="btn btn-sm btn-outline-info" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fs-5 bi-justify"></i></a>
+                                        <a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fas fa-align-justify"></i></a>
                                     </td>
                                 </tr>
                             }

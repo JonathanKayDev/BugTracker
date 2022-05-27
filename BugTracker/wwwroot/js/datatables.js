@@ -28,35 +28,65 @@ window.addEventListener('DOMContentLoaded', event => {
         ]
     });
 
-    const datatablesArchivedProjects = document.getElementById('datatablesArchivedProjects');
-    if (datatablesArchivedProjects) {
-        new simpleDatatables.DataTable(datatablesArchivedProjects);
-    }
+    //const datatablesArchivedProjects = document.getElementById('datatablesArchivedProjects');
+    //if (datatablesArchivedProjects) {
+    //    new simpleDatatables.DataTable(datatablesArchivedProjects);
+    //}
+    $('#datatablesArchivedProjects').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [2, 3, 4, 5, 6] },
+            { className: 'dt-body-center', targets: [2, 3, 4, 5, 6] }
+        ]
+    });
 
-    const datatablesUnassignedProjects = document.getElementById('datatablesUnassignedProjects');
-    if (datatablesUnassignedProjects) {
-        new simpleDatatables.DataTable(datatablesUnassignedProjects);
-    }
+    //const datatablesUnassignedProjects = document.getElementById('datatablesUnassignedProjects');
+    //if (datatablesUnassignedProjects) {
+    //    new simpleDatatables.DataTable(datatablesUnassignedProjects);
+    //}
+    $('#datatablesUnassignedProjects').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [2, 3, 4, 5, 6, 7] },
+            { className: 'dt-body-center', targets: [2, 3, 4, 5, 6, 7] }
+        ]
+    });
 
     const datatablesMyTickets = document.getElementById('datatablesMyTickets');
     if (datatablesMyTickets) {
         new simpleDatatables.DataTable(datatablesMyTickets);
     }
 
-    const datatablesAllTickets = document.getElementById('datatablesAllTickets');
-    if (datatablesAllTickets) {
-        new simpleDatatables.DataTable(datatablesAllTickets);
-    }
+    //const datatablesAllTickets = document.getElementById('datatablesAllTickets');
+    //if (datatablesAllTickets) {
+    //    new simpleDatatables.DataTable(datatablesAllTickets);
+    //}
+    $('#datatablesAllTickets').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [2, 3, 4, 6, 7, 8, 9, 10, 11] },
+            { className: 'dt-body-center', targets: [2, 3, 4, 6, 7, 8, 9, 10, 11] }
+        ]
+    });
 
-    const datatablesArchivedTickets = document.getElementById('datatablesArchivedTickets');
-    if (datatablesArchivedTickets) {
-        new simpleDatatables.DataTable(datatablesArchivedTickets);
-    }
+    //const datatablesArchivedTickets = document.getElementById('datatablesArchivedTickets');
+    //if (datatablesArchivedTickets) {
+    //    new simpleDatatables.DataTable(datatablesArchivedTickets);
+    //}
+    $('#datatablesArchivedTickets').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [2, 3, 5, 6, 7, 8] },
+            { className: 'dt-body-center', targets: [2, 3, 5, 6, 7, 8] }
+        ]
+    });
 
-    const datatablesUnassignedTickets = document.getElementById('datatablesUnassignedTickets');
-    if (datatablesUnassignedTickets) {
-        new simpleDatatables.DataTable(datatablesUnassignedTickets);
-    }
+    //const datatablesUnassignedTickets = document.getElementById('datatablesUnassignedTickets');
+    //if (datatablesUnassignedTickets) {
+    //    new simpleDatatables.DataTable(datatablesUnassignedTickets);
+    //}
+    $('#datatablesUnassignedTickets').DataTable({
+        columnDefs: [
+            { className: 'dt-head-center', targets: [1, 2, 3, 4, 5] },
+            { className: 'dt-body-center', targets: [1, 2, 3, 4, 5] }
+        ]
+    });
 
     const datatablesPDTickets = document.getElementById('datatablesPDTickets');
     if (datatablesPDTickets) {
