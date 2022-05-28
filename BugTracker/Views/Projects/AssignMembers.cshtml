@@ -1,13 +1,14 @@
 ﻿@model BugTracker.Models.ViewModels.ProjectMembersViewModel
 
-<div class="container">
-    <h2>Assign Members for</h2>
+<div class="">
+    <h3 class="mt-2 mb-4">Assign Members for</h3>
     <div class="row">
         <div class="col-md-6">
-            <h3>@Model.Project.Name</h3>
-            <div class="card">
+            <h4>@Model.Project.Name</h4>
+            <div class="card shadow mt-4">
                 <div class="card-header">
-                    <label asp-for="@Model.Users" class="control-label">Assign team members for Project</label>
+                    <i class="fas fa-user-edit text-secondary"></i>
+                    <strong>Assign Team Members</strong>
                 </div>
                 <div class="card-body">
                     <form method="post" asp-action="AssignMembers" asp-controller="Projects">
@@ -19,7 +20,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-10">
-                                <input type="submit" class="btn-primary alert-primary" value="Assign Users"/>
+                                <input type="submit" class="btn btn-primary" value="Assign Users"/>
                             </div>
                         </div>
                     </form>
@@ -27,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="mt-4 mb-4">
         <a asp-action="Details" asp-controller="Projects" asp-route-id="@Model.Project.Id">Back to Details</a>
     </div>
 </div>
