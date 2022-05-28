@@ -13,7 +13,7 @@
 }
 
 <!-- Styles -->
-<style>
+@*<style>
     .amDark {
         background-color: #30303d;
         color: #fff;
@@ -23,11 +23,11 @@
         width: 100%;
         height: 500px;
     }
-</style>
+</style>*@
 
 <h3 class="mt-2 mb-2">Dashboard</h3>
-<a href="javascript:void(0);">
-    @* User Info *@
+
+<a href="">
     @if (btUser?.AvatarFileData != null)
     {
         <img class="media-object" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="" />
@@ -37,6 +37,7 @@
         <img class="media-object" style="width:60px;height:60px;" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="" />
     }
 </a>
+
 @* Get The btUser FullName *@
 <strong>@btUser.FullName</strong>
 <span class="text-muted" style="font-size:x-small;">
@@ -44,17 +45,18 @@
     <strong>@Model.Company.Name</strong>
 </span>
 
-
-<div class="row mt-2">
+<!--!Charts and Info pills-->
+<div class="row mt-4">
     <!-- Info Pills & Morris charts-->
     <div class="col-12 col-md-6">
+        <!-- Info pills -->
         <div class="row">
             <div class="col">
                 <a asp-action="AllProjects" asp-controller="Projects" style="text-decoration:none">
-                    <div class="card text-center bg-success">
+                    <div class="card text-center bg-success shadow">
                         <div class="body">
-                            <div class="p-15 text-light">
-                                <h3>@Model.Projects.Where(p => p.StartDate < DateTime.Now && p.EndDate > DateTime.Now).Count()</h3>
+                            <div class="py-1 text-light">
+                                <h5>@Model.Projects.Where(p => p.StartDate < DateTime.Now && p.EndDate > DateTime.Now).Count()</h5>
                                 <span>Active Projects</span>
                             </div>
                         </div>
@@ -63,11 +65,10 @@
             </div>
             <div class="col">
                 <a asp-action="AllTickets" asp-controller="Tickets" style="text-decoration:none">
-                    <div class="card text-center bg-primary">
+                    <div class="card text-center bg-primary shadow">
                         <div class="body">
-                            <div class="p-15 text-light">
-
-                                <h3>@Model.Tickets.Count()</h3>
+                            <div class="py-1 text-light">
+                                <h5>@Model.Tickets.Count()</h5>
                                 <span>Total Tickets</span>
                             </div>
                         </div>
@@ -75,46 +76,51 @@
                 </a>
             </div>
             <div class="col">
-                <div class="card text-center bg-warning">
-                    <div class="body">
-                        <div class="text-light">
-                            <h3>@Model.Tickets.Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).Count()</h3>
-                            <span>Unassigned Tickets</span>
+                <a asp-action="UnassignedTickets" asp-controller="Tickets" style="text-decoration:none">
+                    <div class="card text-center bg-warning shadow">
+                        <div class="body">
+                            <div class="py-1 text-light">
+                                <h5>@Model.Tickets.Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).Count()</h5>
+                                <span>Unassigned Tickets</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
-@*        <div class="row mt-2 justify-content-center">
-            <div class="col-12 col-md-3">
+        <div class="row mt-4">
+            <div class="col-12 col-md-6">
                 <!-- Chart 1 Tickets by Priority -->
-                <div class="card shadow" style="min-width:300px">
-                    <div class="card-header text-center">
-                        Tickets by Priority
+                <div class="card shadow" style="min-width:250px">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie text-secondary"></i>
+                        <strong>Tickets by Priority</strong>
                     </div>
                     <div class="card-body">
                         <div class="chart chart-md" id="morrisTicketPriority"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-6">
                 <!-- Chart 2 Tickets by Status-->
-                <div class="card shadow" style="min-width:300px">
-                    <div class="card-header text-center">
-                        Tickets by Status
+                <div class="card shadow" style="min-width:250px">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie text-secondary"></i>
+                        <strong>Tickets by Status</strong>
                     </div>
                     <div class="card-body">
                         <div class="" id="morrisTicketStatus"></div>
                     </div>
                 </div>
             </div>
-        </div>*@
+        </div>
     </div>
     <!-- Active projects chart-->
     <div class="col-12 col-md-6">
         <div class="card shadow">
-            <div class="card-header text-center">
-                Active Projects: Tickets vs Developers
+            <div class="card-header">
+                <i class="fas fa-chart-bar text-secondary"></i>
+                <strong>Active Projects: Tickets vs Developers</strong>
             </div>
             <div class="card-body">
                 <div id="plotlyChart"></div>
@@ -267,27 +273,6 @@
             </div>
         </div>
     </div>
-    @* Members Table *@
-    @*			<div class="col-md-2 ">
-        <div class="bg-dark">
-        <div class="card m-1 p-2">
-        <div class="card-header">
-        <h2>Members</h2>
-        <hr />
-        </div>
-        <div class="card-body" style="overflow-y:auto;height:600px;background-color:antiquewhite">
-        @foreach (BTUser member in Model.Members)
-        {
-        <div>
-        <span style="font-weight:bold">@member.FullName</span>
-        <h6>@((await RolesService.GetUserRolesAsync(member)).FirstOrDefault())</h6>
-        </div>
-        <hr />
-        }
-        </div>
-        </div>
-        </div>
-        </div>*@
 </div>
 
 @section scripts{
@@ -295,94 +280,99 @@
 <script src="~/js/chart-bar-demo.js"></script>
 
 	@* Morris Donut Chart *@
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
 	@*Ticket by Priority*@
-<script>
+    <script>
 
-    var ticketByPriorityData = [{
-        label: "Low",
-        value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.Low)).Count()
-    }, {
-        label: "Medium",
-        value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.Medium)).Count()
-    }, {
-        label: "High",
-        value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.High)).Count()
-    }, {
-        label: "Urgent",
-        value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.Urgent)).Count()
-    }];
+        var ticketByPriorityData = [{
+            label: "Low",
+            value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.Low)).Count()
+        }, {
+            label: "Medium",
+            value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.Medium)).Count()
+        }, {
+            label: "High",
+            value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.High)).Count()
+        }, {
+            label: "Urgent",
+            value: @Model.Tickets.Where(t=>t.TicketPriority.Name == nameof(BTTicketPriority.Urgent)).Count()
+        }];
 
 
-    /*
-    Morris: Donut
-    */
-    if ($('#morrisTicketPriority').get(0)) {
-        var donutChart = Morris.Donut({
-            resize: true,
-            element: 'morrisTicketPriority',
-            data: ticketByPriorityData,
-            colors: ['#0088cc', '#734ba9', '#E36159', '#ff993b']
-        });
-    };
-</script>
+        /*
+        Morris: Donut
+        */
+        if ($('#morrisTicketPriority').get(0)) {
+            var donutChart = Morris.Donut({
+                resize: true,
+                element: 'morrisTicketPriority',
+                data: ticketByPriorityData,
+                colors: ['#0088cc', '#734ba9', '#E36159', '#ff993b']
+            });
+        };
+    </script>
 	@*Ticket by Status*@
-<script>
+    <script>
 
-    var ticketByStatusData = [{
-        label: "Resolved",
-        value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.Resolved)).Count()
-    }, {
-        label: "Testing",
-        value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.Testing)).Count()
-    }, {
-        label: "Development",
-        value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.Development)).Count()
-    }, {
-        label: "New",
-        value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.New)).Count()
-    }];
+        var ticketByStatusData = [{
+            label: "Resolved",
+            value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.Resolved)).Count()
+        }, {
+            label: "Testing",
+            value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.Testing)).Count()
+        }, {
+            label: "Development",
+            value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.Development)).Count()
+        }, {
+            label: "New",
+            value: @Model.Tickets.Where(t=>t.TicketStatus.Name == nameof(BTTicketStatus.New)).Count()
+        }];
 
 
-    /*
-    Morris: Donut
-    */
-    if ($('#morrisTicketStatus').get(0)) {
-        var donutChart = Morris.Donut({
-            resize: true,
-            element: 'morrisTicketStatus',
-            data: ticketByStatusData,
-            colors: ['#0088cc', '#734ba9', '#E36159', '#ff993b']
-        });
-    };
-</script>
+        /*
+        Morris: Donut
+        */
+        if ($('#morrisTicketStatus').get(0)) {
+            var donutChart = Morris.Donut({
+                resize: true,
+                element: 'morrisTicketStatus',
+                data: ticketByStatusData,
+                colors: ['#0088cc', '#734ba9', '#E36159', '#ff993b']
+            });
+        };
+    </script>
 
-<!--  Plotly Charts  -->
-<!-- Load plotly.js into the DOM -->
-<script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
-<script>
-    $.ajax({
-        type: "POST",
-        url: "/Home/PlotlyBarChart",
-        data: '{}',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (result) {
-            var data = result;
+    <!--  Plotly Charts  -->
+    <!-- Load plotly.js into the DOM -->
+    <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+    <script>
+        $.ajax({
+            type: "POST",
+            url: "/Home/PlotlyBarChart",
+            data: '{}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                
+                var data = result;
 
-              var layout = {barmode: 'group'};
+                var layout = {showlegend: false,
+                    paper_bgcolor:'rgba(0,0,0,0)',
+                    plot_bgcolor:'rgba(0,0,0,0)'};
 
-            Plotly.newPlot('plotlyChart', data, layout);
-            },
-            failure: function (result) {
-                alert(result.d);
-            },
-            error: function (result) {
-                alert(result.d);
-            }
-        });
-</script>
+                var config = {responsive: true};
+
+                Plotly.newPlot('plotlyChart', data, layout, config);
+                },
+                failure: function (result) {
+                    alert(result.d);
+                },
+                error: function (result) {
+                    alert(result.d);
+                }
+            });
+    </script>
 
 }

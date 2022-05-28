@@ -50,6 +50,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Shared\_LoginPartial.cshtml" />
+    <Content Remove="wwwroot\js\chart-bar-demo.js" />
   </ItemGroup>
 
   <ItemGroup>

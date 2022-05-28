@@ -40,7 +40,7 @@ table.dataTable.table-striped > tbody > tr.odd > * {
 table.dataTable td, th {
     /*font-size: 0.9em;*/
     vertical-align: middle;
-    color: darkslategray;
+    color: darkslategray !important;
 }
 
 

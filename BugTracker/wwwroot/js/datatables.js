@@ -116,10 +116,6 @@ window.addEventListener('DOMContentLoaded', event => {
         iDisplayLength: 10
     });
 
-    //const datatablesMyTickets = document.getElementById('datatablesMyTickets');
-    //if (datatablesMyTickets) {
-    //    new simpleDatatables.DataTable(datatablesMyTickets);
-    //}
     $('#datatablesMyTickets').DataTable({
         columnDefs: [
             { className: 'dt-head-center', targets: [2, 3, 4, 6, 7, 8, 9, 10, 11] },
