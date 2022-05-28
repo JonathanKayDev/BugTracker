@@ -46,8 +46,24 @@
                         <p>@Model.Description</p>
                         <div class="progress-container progress-info m-b-25">
                             @*Project Name and information*@
-                            <span class="progress-badge" style="font-size:small">Project: @Model.Project.Name</span>
-                            <div class="progress">
+                            <strong class="progress-badge" style="font-size:small">Project: </strong><a style="text-decoration:none" asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">@Model.Project.Name</a>
+                            <br />
+                            <strong class="progress-badge" style="font-size:small">Developer: </strong>
+                                        @if (Model.DeveloperUserId != null)
+                                        {
+                                            <span>@Model.DeveloperUser?.FullName</span>
+                                        }
+                                        else
+                                        {
+                                            if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                            {
+                                                <a class="badge bg-info text-white" style="text-decoration:none" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id">Assign Developer</a>
+                                            }
+
+                                        }
+                            <br />
+
+                            <div class="progress mt-2">
                                 @*Progress bar logic*@
                                 @{
                                     var start = Model.Project.StartDate.DateTime;
