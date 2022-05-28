@@ -5,12 +5,12 @@
     ViewData["Title"] = "My Projects";
 }
 
-<h1>My Projects</h1>
+<h3 class="mt-2 mb-4">My Projects</h3>
 
 @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
 {
     <p>
-        <a class="btn btn-primary" asp-action="Create">Create Project +</a>
+        <a class="btn btn-sm btn-primary" asp-action="Create">Create Project +</a>
     </p>
 }
 

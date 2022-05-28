@@ -15,11 +15,11 @@
 }
 
 
-<h1>Ticket Details</h1>
+<h3 class="mt-2 mb-4">Ticket Details</h3>
 
 @if (!string.IsNullOrEmpty(Model.DeveloperUserId))
 {
-    <a href="javascript:void(0);">
+    <a href="">
         @if (Model.DeveloperUser?.AvatarFileData != null)
         {
             <img class="media-object" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="" />
@@ -30,13 +30,11 @@
         }
     </a>
 
-    <span class="text-muted" style="font-size:x-small;">
-        Developer: <strong>@Model.DeveloperUser.FullName</strong>
-    </span>
+    <span class="text-muted" style="font-size:x-small;">Developer: <strong>@Model.DeveloperUser?.FullName</strong></span>
 }
 
-<div class="row">
-    <div class="col-12 col-md-8 mt-4">
+<div class="row mt-2">
+    <div class="col-12 col-md-8">
         <!-- Details -->
         <div class="row">
             <div class="col">
@@ -44,7 +42,7 @@
                     <div class="card-header">
                         <strong>@Model.Title</strong>
                     </div>
-                    <div class="card-body" style="overflow-y:auto;max-height:300px;">
+                    <div class="card-body px-2" style="overflow-y:auto;max-height:300px;">
                         <p>@Model.Description</p>
                         <div class="progress-container progress-info m-b-25">
                             @*Project Name and information*@
@@ -98,7 +96,7 @@
                             @foreach (TicketComment comment in Model.Comments.Reverse())
                             {
                                 <li class="online mb-4">
-                                    <div class="media">
+                                    <div class="media px-2">
                                         <!--TODO - Add link to user-->
                                     <a href="javascript:void(0);">
                                             @if (btUser?.AvatarFileData != null)
@@ -118,6 +116,7 @@
                                         </div>
                                         <span class="message text-primary">@Html.Raw(comment.Comment)</span>
                                     </div>
+                                    <hr>
                                 </li>
                             }
                         </ul>
@@ -197,7 +196,7 @@
                     <div class="card-header">
                         <strong>Add Attachment</strong>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body px-2">
                         <div class="row clearfix">
                             <div>
                                 <form asp-action="AddTicketAttachment" asp-controller="Tickets" enctype="multipart/form-data" method="post">
@@ -222,38 +221,41 @@
         </div>
     </div>
     <!-- Ticket Activity-->
-    <div class="col-12 col-md-4 mt-4 mb-4">
+    <div class="col-12 col-md-4 mb-4">
         <div class="col">
             <div class="card shadow">
                 <div class="card-header">
                     <strong>Ticket Activity</strong>
                 </div>
-                <div class="card-body ticket-activity">
+                <div class="card-body ticket-activity px-2">
                     @if (Model.History.Count == 0)
                         {
                             <p class="text-secondary">&nbsp;No Activity</p>
                         }
                     @*Loop to show the history entries for the Ticket*@
-                    @foreach (TicketHistory tH in Model.History)
+                    @foreach (TicketHistory tH in Model.History.Reverse())
                     {
                         <div class="">
-                            <span class="date" style="font-weight:bold">@tH.Created.ToString("dd MMM yyyy")</span>
-                            <h6>@tH.Description</h6>
-                            <span>By: <a href="" title="@tH.User.FullName">@tH.User.FullName</a></span>
+                            <span class="date"><strong>@tH.Created.ToString("dd MMM yyyy")</strong></span>
+                            <br>
+                            <span>@tH.Description</span>
+                            <br>
+                            <span>By: <a href="" style="text-decoration: none">@tH.User?.FullName</a></span>
+                            <p></p>
                             <div class="">
                                 @if (tH.Description.Contains("New Ticket Created"))
                                 {
-                                    <p>A ticket was added.</p>
+                                    <p>&nbsp;&nbsp;A ticket was added.</p>
                                 }
                                 else if (tH.Property.Equals("TicketComment") || tH.Property.Equals("TicketAttachment"))
                                 {
-                                    <p>A <b>@tH.Property</b> was added.</p>
+                                    <p>&nbsp;&nbsp;A <b>@tH.Property</b> was added.</p>
                                 }
                                 else
                                 {
-                                    <p>The ticket <b>@tH.Property</b> was edited</p>
-                                    <p>@($"Previous {tH.Property}:  ") <span style="color:red">@tH.OldValue</span></p>
-                                    <p>@($"Current {tH.Property}:   ") <span style="color:green">@tH.NewValue</span></p>
+                                    <p>&nbsp;&nbsp;The ticket <b>@tH.Property</b> was edited</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;@($"Previous {tH.Property}:  ") <span class="text-danger">@tH.OldValue</span></p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;@($"Current {tH.Property}:   ") <span class="text-success">@tH.NewValue</span></p>
                                 }
 
                             </div>

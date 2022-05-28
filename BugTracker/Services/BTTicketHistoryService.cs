@@ -236,6 +236,8 @@ namespace BugTracker.Services
 
                 List<TicketHistory> ticketHistories = project.Tickets.SelectMany(t => t.History).ToList();
 
+                ticketHistories.Reverse();
+
                 return ticketHistories;
             }
             catch (Exception)
