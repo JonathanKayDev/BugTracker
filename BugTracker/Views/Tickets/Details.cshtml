@@ -15,7 +15,28 @@
 }
 
 
-<h3 class="mt-2 mb-4">Ticket Details</h3>
+<h3 class="mt-2">Ticket Details</h3>
+<div class="mb-4">
+    @if (User.IsInRole(nameof(Roles.Admin)) || Model.DeveloperUserId == btUser.Id ||
+    Model.OwnerUserId == btUser.Id ||
+    await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, Model.ProjectId))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id"><i class="far fa-edit"></i></a>
+        <text> | </text>
+    }
+
+    @if (User.IsInRole(nameof(Roles.Admin)) || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, Model.ProjectId))
+    {
+        if (Model.Archived)
+        {
+            <a class="text-success" asp-action="Restore" asp-route-id="@Model.Id"><i class="far fa-trash-alt"></i></a>
+        }
+        else
+        {
+            <a asp-action="Archive" asp-route-id="@Model.Id"><i class="far fa-trash-alt"></i></a>
+        }
+    }
+</div>
 
 @if (!string.IsNullOrEmpty(Model.DeveloperUserId))
 {
@@ -50,18 +71,18 @@
                             <strong class="progress-badge" style="font-size:small">Project: </strong><a style="text-decoration:none" asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">@Model.Project.Name</a>
                             <br />
                             <strong class="progress-badge" style="font-size:small">Developer: </strong>
-                                        @if (Model.DeveloperUserId != null)
-                                        {
-                                            <span>@Model.DeveloperUser?.FullName</span>
-                                        }
-                                        else
-                                        {
-                                            if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
-                                            {
-                                                <a class="badge bg-info text-white" style="text-decoration:none" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id">Assign Developer</a>
-                                            }
+                            @if (Model.DeveloperUserId != null)
+                            {
+                                <span>@Model.DeveloperUser?.FullName</span>
+                            }
+                            else
+                            {
+                                if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                {
+                                    <a class="badge bg-info text-white" style="text-decoration:none" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id">Assign Developer</a>
+                                }
 
-                                        }
+                            }
                             <br />
 
                             <div class="progress mt-2">
@@ -182,9 +203,9 @@
                     </div>
                     <div class="card-body" style="overflow-y:auto;max-height:300px;">
                         @if (Model.Attachments.Count == 0)
-                            {
-                                <p class="text-secondary">&nbsp;No Attachments</p>
-                            }
+                        {
+                            <p class="text-secondary">&nbsp;No Attachments</p>
+                        }
                         <div class="container">
                             <div class="row">
                                 @foreach (TicketAttachment item in Model.Attachments)
@@ -251,9 +272,9 @@
                 </div>
                 <div class="card-body ticket-activity px-2">
                     @if (Model.History.Count == 0)
-                        {
-                            <p class="text-secondary">&nbsp;No Activity</p>
-                        }
+                    {
+                        <p class="text-secondary">&nbsp;No Activity</p>
+                    }
                     @*Loop to show the history entries for the Ticket*@
                     @foreach (TicketHistory tH in Model.History.Reverse())
                     {

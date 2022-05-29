@@ -12,11 +12,26 @@
 
     BTUser btUser = await UserManager.GetUserAsync(User);
     BTUser projectManager = await ProjectService.GetProjectManagerAsync(Model.Id);
-
-
+    bool isPM = (await ProjectService.GetProjectManagerAsync(Model.Id))?.Id == btUser.Id;
 }
 
-<h3 class="mt-2 mb-4">Project Details</h3>
+<h3 class="mt-2">Project Details</h3>
+<div class="mb-4">
+    @if (User.IsInRole(nameof(Roles.Admin)) || isPM)
+    {
+        <a style="text-decoration: none" asp-action="Edit" asp-route-id="@Model.Id"><i class="far fa-edit"></i></a>
+        <text> | </text>
+
+        if (Model.Archived)
+        {
+            <a class="text-success" style="text-decoration: none" asp-action="Restore" asp-route-id="@Model.Id"><i class="far fa-trash-alt"></i></a>
+        }
+        else
+        {
+            <a style="text-decoration: none" asp-action="Archive" asp-route-id="@Model.Id"><i class="far fa-trash-alt"></i></a>
+        }
+    }
+</div>
 
 <div class="row">
     <div class="col-12 col-md-8">
@@ -145,7 +160,7 @@
                                         <span class="" style="font-size:x-small">[@((await UserManager.GetRolesAsync(member)).FirstOrDefault())]</span>
                                     </div>
                                 </li>
-                                <hr/>
+                                <hr />
                             }
                         </ul>
                     </div>

@@ -100,7 +100,7 @@
 
                                     @if (User.IsInRole(nameof(Roles.Admin)) || isPM)
                                     {
-                                       <text>  |  </text><a class="text-secondary" style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a><text>  |  </text>
+                                       <text>  |  </text><a style="text-decoration: none" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a><text>  |  </text>
                                         <a class="text-success" style="text-decoration: none" asp-action="Restore" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>
                                     }
                                 </td>
