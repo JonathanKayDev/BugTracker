@@ -5,7 +5,7 @@
     //ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h3 class="mt-2 mb-4">Create</h3>
 
 <h4>Project</h4>
 <hr />
@@ -18,62 +18,66 @@
                 <input asp-for="Project.Name" class="form-control" />
                 <span asp-validation-for="Project.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="Project.Description" class="control-label"></label>
                 <input asp-for="Project.Description" class="form-control" />
                 <span asp-validation-for="Project.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="Project.StartDate" class="control-label"></label>
                 <input asp-for="Project.StartDate" class="form-control" />
                 <span asp-validation-for="Project.StartDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="Project.EndDate" class="control-label"></label>
                 <input asp-for="Project.EndDate" class="form-control" />
                 <span asp-validation-for="Project.EndDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label class="control-label"> Choose a priority </label>
-                <select asp-for="Project.ProjectPriorityId" class ="form-control" asp-items="@Model.PriorityList"></select>
+                <select asp-for="Project.ProjectPriorityId" class="form-control" asp-items="@Model.PriorityList"></select>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label class="control-label"> Project Image </label>
-                <input asp-for="Project.ImageFormFile" class="form-control" type="file" accept=".png,.jpg,.jpeg,.gif" 
-                    onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])"/>
+                <input asp-for="Project.ImageFormFile" class="form-control" type="file" accept=".png,.jpg,.jpeg,.gif"
+                       onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])" />
                 <span asp-validation-for="Project.ImageFormFile" class="text-danger"></span>
             </div>
-            <label> Image Preview </label>
-            @if (Model.Project?.ImageFileData != null)
-            {
-                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="data:image/*;base64,@(Convert.ToBase64String(Model.Project.ImageFileData))"/>
-            }
-            else
-            {
-                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px"/>
-            }
+            <div class="form-group  mt-2">
+                <label> Image Preview </label>
+                @if (Model.Project?.ImageFileData != null)
+                {
+                    <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" src="data:image/*;base64,@(Convert.ToBase64String(Model.Project.ImageFileData))" />
+                }
+                else
+                {
+                    <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px" />
+                }
+            </div>
 
-            @if(User.IsInRole(Roles.Admin.ToString()))
+            @if (User.IsInRole(Roles.Admin.ToString()))
             {
-                <div class="form-group">
+                <div class="form-group  mt-2">
                     <label class="control-label"> Project Manager </label>
-                    <select asp-for="PmId" class ="form-control" asp-items="@Model.PMList">
+                    <select asp-for="PmId" class="form-control" asp-items="@Model.PMList">
                         <option></option>
                     </select>
                 </div>
             }
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group mt-2">
+                <input type="submit" value="Create" class="btn btn-primary mt-2" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="mt-4 mb-4" >
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
