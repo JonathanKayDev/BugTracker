@@ -1,5 +1,6 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Models.Enums;
 using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,10 @@ namespace BugTracker.Services
                 List<IdentityRole> result = new();
 
                 result = await _context.Roles.ToListAsync();
+
+                // Remove Site Admin
+                IdentityRole siteAdmin = result.Single(r => r.Name == nameof(Roles.SiteAdmin));
+                result.Remove(siteAdmin);
 
                 return result;
             }
