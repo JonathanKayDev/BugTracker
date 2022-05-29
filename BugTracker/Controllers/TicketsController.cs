@@ -469,7 +469,7 @@ namespace BugTracker.Controllers
             Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
             await _ticketService.ArchiveTicketAsync(ticket);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllTickets));
         }
         #endregion
 
@@ -508,7 +508,7 @@ namespace BugTracker.Controllers
             Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
             await _ticketService.RestoreTicketAsync(ticket);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllTickets));
         }
         #endregion
 
