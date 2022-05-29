@@ -6,11 +6,14 @@
 }
 
 <h3 class="mt-2 mb-4">Edit</h3>
-
-<h4>Project</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-header">
+                <strong>Project</strong>
+            </div>
+            <div class="card-body">
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Project.Id" />
@@ -79,10 +82,13 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<div class="mt-4 mb-4">
+<div class="mt-2 mb-4">
     <a asp-action="AllProjects">Back to All Projects</a>
 </div>
 
