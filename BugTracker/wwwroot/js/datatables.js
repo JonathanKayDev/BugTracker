@@ -211,5 +211,19 @@ window.addEventListener('DOMContentLoaded', event => {
         iDisplayLength: 10
     });
 
+    $('#datatablesCompanyMembers').DataTable({
+        language: {
+            lengthMenu: "_MENU_",
+            search: "_INPUT_",
+            searchPlaceholder: "Search",
+            info: "_START_ to _END_ of _TOTAL_ entries",
+            "paginate": {
+                "previous": "<",
+                "next": ">"
+            }
+        },
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        iDisplayLength: 10
+    });
 });
 

@@ -1,31 +1,106 @@
 ﻿@model BugTracker.Models.Company
+@using Microsoft.AspNetCore.Identity
+@using BugTracker.Services.Interfaces
+
+@inject UserManager<BTUser> UserManager
+@inject IBTCompanyInfoService CompanyInfoService
+@inject IBTRolesService RolesService
 
 @{
     ViewData["Title"] = "Details";
+    List<BTUser> members = await CompanyInfoService.GetAllMembersAsync(Model.Id);
+    IEnumerable<string> userRoles = Enumerable.Empty<string>();
 }
 
-<h1>Details</h1>
+<h3 class="mt-2 mb-4">Company</h3>
+<hr />
 
-<div>
-    <h4>Company</h4>
-    <hr />
-    <p>TODO - Manager User Roles</p>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header">
+                <i class="fas fa-info-circle text-secondary"></i>
+                <strong>Details</strong>
+            </div>
+            <div class="card-body p-2">
+                <dl class="row gy-2">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="row mt-4 mb-4">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header">
+                <i class="fas fa-users text-secondary"></i>
+                <strong>Members</strong>
+            </div>
+            <div class="card-body p-2">
+                <table id="datatablesCompanyMembers" class="table table-striped dt-responsive w-100">
+                    <thead>
+                        <tr>
+                            <th>
+                                First Name
+                            </th>
+                            <th>
+                                Last Name
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Role
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (BTUser member in members)
+                        {
+                            userRoles = await RolesService.GetUserRolesAsync(member);
+                            int i = 1;
+                            <tr>
+                                <td>
+                                    @member.FirstName
+                                </td>
+                                 <td>
+                                    @member.LastName
+                                </td>
+                                <td>
+                                    @member.Email
+                                </td>
+                                <td>
+                                    @foreach (string role in userRoles)
+                                    {
+                                        <text>@role</text>
+
+                                        @if (i < userRoles.Count())
+                                        {
+                                            <text> , </text>
+                                        }
+
+                                        i++;
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
