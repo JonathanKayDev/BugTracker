@@ -36,7 +36,7 @@
                     <tbody>
                         @foreach (var member in Model)
                         {
-                            @if (!(await RolesService.IsUserInRoleAsync(member.BTUser, nameof(Roles.DemoUser))))
+                            @if (!(await RolesService.IsUserInRoleAsync(member.BTUser, nameof(Roles.DemoUser))) && !(await RolesService.IsUserInRoleAsync(member.BTUser, nameof(Roles.SiteAdmin))))
                             {
                                 <tr>
                                     <td>

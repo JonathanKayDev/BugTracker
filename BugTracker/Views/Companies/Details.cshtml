@@ -71,32 +71,35 @@
                     <tbody>
                         @foreach (BTUser member in members)
                         {
-                            userRoles = await RolesService.GetUserRolesAsync(member);
-                            int i = 1;
-                            <tr>
-                                <td>
-                                    @member.FirstName
-                                </td>
-                                 <td>
-                                    @member.LastName
-                                </td>
-                                <td>
-                                    @member.Email
-                                </td>
-                                <td>
-                                    @foreach (string role in userRoles)
-                                    {
-                                        <text>@role</text>
-
-                                        @if (i < userRoles.Count())
+                            @if (!(await RolesService.IsUserInRoleAsync(member, nameof(Roles.SiteAdmin))))
+                            {
+                                userRoles = await RolesService.GetUserRolesAsync(member);
+                                int i = 1;
+                                <tr>
+                                    <td>
+                                        @member.FirstName
+                                    </td>
+                                    <td>
+                                        @member.LastName
+                                    </td>
+                                    <td>
+                                        @member.Email
+                                    </td>
+                                    <td>
+                                        @foreach (string role in userRoles)
                                         {
-                                            <text> , </text>
-                                        }
+                                            <text>@role</text>
 
-                                        i++;
-                                    }
-                                </td>
-                            </tr>
+                                            @if (i < userRoles.Count())
+                                            {
+                                                <text> , </text>
+                                            }
+
+                                            i++;
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
