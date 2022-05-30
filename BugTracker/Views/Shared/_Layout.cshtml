@@ -130,10 +130,26 @@
                                     </nav>
                                 </div>
                                 <!-- Notifications -->
-                                <a asp-area="" asp-controller="Notifications" asp-action="Index" class="nav-link">
+@*                                <a asp-area="" asp-controller="Notifications" asp-action="Index" class="nav-link">
                                     <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
                                     Notifications
-                                </a>
+                                </a>*@
+
+                                @if (User.IsInRole(nameof(Roles.Admin)) && !User.IsInRole(nameof(Roles.SiteAdmin)))
+                                {
+                                    <!-- Admin Tools -->
+                                    <div class="sb-sidenav-menu-heading">Tools</div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSiteAdminTools" aria-expanded="false" aria-controls="collapseSiteAdminTools">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                                        Admin Tools
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="collapseSiteAdminTools" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a asp-controller="UserRoles" asp-action="ManageUserRoles" class="nav-link">Manage Member Roles</a>
+                                        </nav>
+                                    </div>
+                                }
 
                                 @if (User.IsInRole(nameof(Roles.SiteAdmin)))
                                 {
@@ -183,11 +199,11 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div class="text-muted">Copyright &copy; <a style="text-decoration:none" href="https://www.jonathankay.dev" target="_blank">Jonathan Kay</a> 2022</div>
                             <div>
-                                <a href="#">Privacy Policy</a>
+@*                                <a href="#">Privacy Policy</a>
                                 &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                                <a href="#">Terms &amp; Conditions</a>*@
                             </div>
                         </div>
                     </div>
