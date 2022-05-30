@@ -1,8 +1,10 @@
 ﻿using BugTracker.Extensions;
 using BugTracker.Models;
+using BugTracker.Models.Enums;
 using BugTracker.Models.ViewModels;
 using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -14,17 +16,23 @@ namespace BugTracker.Controllers
         #region Properties
         private readonly IBTRolesService _rolesService;
         private readonly IBTCompanyInfoService _companyInfoService;
+        private readonly UserManager<BTUser> _userManager;
         #endregion
 
         #region Constructor
-        public UserRolesController(IBTRolesService rolesService, IBTCompanyInfoService companyInfoService)
+        public UserRolesController(IBTRolesService rolesService, 
+                                    IBTCompanyInfoService companyInfoService, 
+                                    UserManager<BTUser> userManager)
         {
             _rolesService = rolesService;
             _companyInfoService = companyInfoService;
+            _userManager = userManager;
         }
         #endregion
 
         #region Manage User Roles
+        // GET
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles()
         {
@@ -45,8 +53,8 @@ namespace BugTracker.Controllers
             {
                 ManageUserRolesViewModel viewModel = new();
                 viewModel.BTUser = user;
-                IEnumerable<string> selected = await _rolesService.GetUserRolesAsync(user);
-                viewModel.Roles = new MultiSelectList(await _rolesService.GetRolesAsync(), "Name", "Name", selected);
+                string selected = (await _rolesService.GetUserRolesAsync(user)).FirstOrDefault();
+                viewModel.Roles = new SelectList(await _rolesService.GetRolesAsync(), "Name", "Name", selected);
 
                 model.Add(viewModel);
             }
@@ -55,10 +63,18 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
+        // POST
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel member)
         {
+            // Check for Demo User
+            if (await IsDemoUser())
+            {
+                return new RedirectResult("~/Identity/Account/AccessDenied");
+            }
+
             // Get the company Id
             int companyId = User.Identity.GetCompanyId().Value;
 
@@ -69,7 +85,7 @@ namespace BugTracker.Controllers
             IEnumerable<string> roles = await _rolesService.GetUserRolesAsync(user);
 
             // Grab the selected role
-            string userRole = member.SelectedRoles.FirstOrDefault();
+            string userRole = member.SelectedRole;
 
             if (!string.IsNullOrEmpty(userRole))
             {
@@ -83,7 +99,23 @@ namespace BugTracker.Controllers
 
             // Navigate back to the view
             return RedirectToAction(nameof(ManageUserRoles));
-        } 
+        }
+        #endregion
+
+        #region Is Demo User
+        private async Task<bool> IsDemoUser()
+        {
+            // Check if Demo User
+            BTUser btUser = await _userManager.GetUserAsync(User);
+            if (await _userManager.IsInRoleAsync(btUser, nameof(Roles.DemoUser)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
     }
 }
