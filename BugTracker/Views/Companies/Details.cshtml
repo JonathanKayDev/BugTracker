@@ -1,4 +1,5 @@
 ﻿@model BugTracker.Models.Company
+@using BugTracker.Models.Enums
 @using Microsoft.AspNetCore.Identity
 @using BugTracker.Services.Interfaces
 
@@ -99,6 +100,12 @@
                         }
                     </tbody>
                 </table>
+                @if (User.IsInRole(nameof(Roles.Admin)))
+                {
+                    <div class="mt-2">
+                        <a class="btn btn-primary" asp-controller="UserRoles" asp-action="ManageUserRoles">Manage User Roles</a>
+                    </div>
+                }
             </div>
         </div>
     </div>
