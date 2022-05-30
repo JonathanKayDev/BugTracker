@@ -15,57 +15,65 @@
 <div class="row justify-content-center mt-4 pt-4">
     <div class="col-md-4">
         <section>
-            <!-- Demo Admin -->
-            <form id="demoAdmin" method="post" class="mb-2">
-                <h2>Log in as Demo Account.</h2>
-                <hr />
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" value=@DemoAdminUserName hidden="true"/>
+            <!-- Demo Account Login -->
+            <div class="card shadow mt-4">
+                <div class="card-header">
+                    <i class="fas fa-user-secret text-secondary"></i>
+                    <strong>Demo Account Login</strong>
                 </div>
-                <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
+                <div class="card-body text-center">
+                    <!-- Demo Admin -->
+                    <form id="demoAdmin" method="post" class="mt-2 mb-2">
+                        <div class="form-floating">
+                            <input asp-for="Input.Email" class="form-control" value=@DemoAdminUserName hidden="true" />
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true" />
+                        </div>
+                        <div>
+                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-danger">Admin</button>
+                        </div>
+                    </form>
+                    <!-- Demo PM -->
+                    <form id="demoPM" method="post" class="mt-4 mb-2">
+                        <div class="form-floating">
+                            <input asp-for="Input.Email" class="form-control" value=@DemoProjectManagerUserName hidden="true" />
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true" />
+                        </div>
+                        <div>
+                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-success">Project Manager</button>
+                        </div>
+                    </form>
+                    <!-- Demo Developer -->
+                    <form id="demoDeveloper" method="post" class="mt-4 mb-2">
+                        <div class="form-floating">
+                            <input asp-for="Input.Email" class="form-control" value=@DemoDeveloperUserName hidden="true" />
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true" />
+                        </div>
+                        <div>
+                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Developer</button>
+                        </div>
+                    </form>
+                    <!-- Demo Submitter -->
+                    <form id="demoSubmitter" method="post" class="mt-4 mb-2">
+                        <div class="form-floating">
+                            <input asp-for="Input.Email" class="form-control" value=@DemoSubmitterUserName hidden="true" />
+                        </div>
+                        <div class="form-floating">
+                            <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true" />
+                        </div>
+                        <div>
+                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-secondary">Submitter</button>
+                        </div>
+                    </form>
                 </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Admin</button>
-                </div>
-            </form>
-            <!-- Demo PM -->
-            <form id="demoPM" method="post" class="mb-2">
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" value=@DemoProjectManagerUserName hidden="true"/>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Project Manager</button>
-                </div>
-            </form>
-            <!-- Demo Developer -->
-            <form id="demoDeveloper" method="post" class="mb-2">
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" value=@DemoDeveloperUserName hidden="true"/>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Developer</button>
-                </div>
-            </form>
-            <!-- Demo Submitter -->
-            <form id="demoSubmitter" method="post" class="mb-2">
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" value=@DemoSubmitterUserName hidden="true"/>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" value=@DemoUserPassword hidden="true"/>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Submitter</button>
-                </div>
-            </form>
-            <div class="mt-4">
+            </div>
+
+            <div class="text-center mt-4">
                 <a asp-page="./Login">Back to account log in</a>
             </div>
         </section>
@@ -73,5 +81,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
 }
