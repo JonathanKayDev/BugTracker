@@ -53,8 +53,10 @@ namespace BugTracker.Controllers
             {
                 ManageUserRolesViewModel viewModel = new();
                 viewModel.BTUser = user;
-                string selected = (await _rolesService.GetUserRolesAsync(user)).FirstOrDefault();
-                viewModel.Roles = new SelectList(await _rolesService.GetRolesAsync(), "Name", "Name", selected);
+                // Get Roles for the user
+                IEnumerable<string> selected = await _rolesService.GetUserRolesAsync(user);
+                //string selected = (await _rolesService.GetUserRolesAsync(user)).FirstOrDefault();
+                viewModel.Roles = new MultiSelectList(await _rolesService.GetRolesAsync(), "Name", "Name", selected);
 
                 model.Add(viewModel);
             }
@@ -84,16 +86,16 @@ namespace BugTracker.Controllers
             // Get Roles for the user
             IEnumerable<string> roles = await _rolesService.GetUserRolesAsync(user);
 
-            // Grab the selected role
-            string userRole = member.SelectedRole;
-
-            if (!string.IsNullOrEmpty(userRole))
+            if (member.SelectedRoles != null)
             {
                 // Remove user from their roles
                 if (await _rolesService.RemoveUserFromRolesAsync(user, roles))
                 {
-                    // Add user to the new role
-                    await _rolesService.AddUserToRoleAsync(user, userRole);
+                    // Add user to the new selected role(s)
+                    foreach(string role in member.SelectedRoles)
+                    {
+                        await _rolesService.AddUserToRoleAsync(user, role);
+                    } 
                 }
             }
 

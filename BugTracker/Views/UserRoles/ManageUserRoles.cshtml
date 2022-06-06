@@ -36,7 +36,7 @@
                     <tbody>
                         @foreach (var member in Model)
                         {
-                            @if (!(await RolesService.IsUserInRoleAsync(member.BTUser, nameof(Roles.DemoUser))) && !(await RolesService.IsUserInRoleAsync(member.BTUser, nameof(Roles.SiteAdmin))))
+                            @if (!(await RolesService.IsUserInRoleAsync(member.BTUser, nameof(Roles.SiteAdmin))))
                             {
                                 <tr>
                                     <td>
@@ -54,12 +54,12 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <select asp-for="@member.SelectedRole" class="form-control" asp-items="@member.Roles"></select>
+                                                        <select required asp-for="@member.SelectedRoles" class="form-control" asp-items="@member.Roles" multiple></select>
                                                     </div>
                                                 </div>
                                                 <div class="col-6 align-self-center">
                                                     <div class="form-group">
-                                                        <input type="submit" value="Assign Role" class="btn btn-sm btn-info text-white" />
+                                                        <input type="submit" value="Assign Role(s)" class="btn btn-sm btn-info text-white" />
                                                     </div>
                                                 </div>
                                             </div>

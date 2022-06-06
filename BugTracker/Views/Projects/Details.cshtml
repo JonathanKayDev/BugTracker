@@ -140,7 +140,11 @@
                     <div class="card-body text-center px-2" style="overflow-y:auto;height:300px;">
                         <ul class="right_chat list-unstyled mb-0">
                             @* Logic for avatars *@
-                            @foreach (BTUser member in await ProjectService.GetAllProjectMembersExceptPMAsync(Model.Id))
+                            @{
+                                List<BTUser> projectTeam = await ProjectService.GetAllProjectMembersExceptPMAsync(Model.Id);
+                            }
+                            @*Use distinct method so members in multiple roles don't appear multiple times in list*@
+                            @foreach (BTUser member in projectTeam.Distinct())
                             {
                                 <li class="mt-2">
                                     <a href="">
@@ -157,7 +161,13 @@
                                     </a>
                                     <div class="">
                                         <span class="">@member.FullName</span>
-                                        <span class="" style="font-size:x-small">[@((await UserManager.GetRolesAsync(member)).FirstOrDefault())]</span>
+                                        @{
+                                            List<string> memberRoles = (await UserManager.GetRolesAsync(member)).ToList();
+                                        }
+                                        @foreach(string role in memberRoles)
+                                        {
+                                            <span class="" style="font-size:x-small">[@role]</span>
+                                        }
                                     </div>
                                 </li>
                                 <hr />
