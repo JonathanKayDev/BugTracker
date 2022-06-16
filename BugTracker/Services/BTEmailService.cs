@@ -8,13 +8,18 @@ namespace BugTracker.Services
 {
     public class BTEmailService : IEmailSender
     {
+        #region Properties
         private readonly MailSettings _mailSettings;
+        #endregion
 
+        #region Constructor
         public BTEmailService(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;
         }
+        #endregion
 
+        #region Send Email
         public async Task SendEmailAsync(string emailTo, string subject, string htmlMessage)
         {
             MimeMessage email = new();
@@ -45,6 +50,7 @@ namespace BugTracker.Services
 
                 throw;
             }
-        }
+        } 
+        #endregion
     }
 }
