@@ -27,6 +27,7 @@ namespace BugTracker.Controllers
         private readonly IBTTicketService _ticketService;
         private readonly IBTFileService _fileService;
         private readonly IBTTicketHistoryService _ticketHistoryService;
+        private readonly IBTRolesService _rolesService;
         #endregion
 
         #region Constructor
@@ -34,8 +35,9 @@ namespace BugTracker.Controllers
                             IBTProjectService projectService,
                             IBTLookupService lookupService,
                             IBTTicketService ticketService,
-                            IBTFileService fileService, 
-                            IBTTicketHistoryService ticketHistoryService)
+                            IBTFileService fileService,
+                            IBTTicketHistoryService ticketHistoryService, 
+                            IBTRolesService rolesService)
         {
             _userManager = userManager;
             _projectService = projectService;
@@ -43,6 +45,7 @@ namespace BugTracker.Controllers
             _ticketService = ticketService;
             _fileService = fileService;
             _ticketHistoryService = ticketHistoryService;
+            _rolesService = rolesService;
         }
         #endregion
 
@@ -50,8 +53,25 @@ namespace BugTracker.Controllers
         //GET: MyTickets
         public async Task<IActionResult> MyTickets()
         {
-            BTUser bTUser = await _userManager.GetUserAsync(User);
-            List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(bTUser.Id, bTUser.CompanyId);
+            BTUser bTUser = new();
+            List<Ticket> tickets = new();
+
+            // If demo user, then use a developer in company as an example for view
+            if (User.IsInRole(nameof(Roles.DemoUser)))
+            {
+                int companyId = User.Identity.GetCompanyId().Value;
+                bTUser = (await _rolesService.GetUsersInRoleAsync(nameof(Roles.Developer), companyId)).Where(u => u.FirstName != "Demo").FirstOrDefault();
+                tickets = await _ticketService.GetTicketsByUserIdAsync(bTUser.Id, bTUser.CompanyId);
+                // Don't allow demo user to see unassigned tickets if company Developer is also Company Admin
+                tickets = tickets.Where(t => t.DeveloperUser == bTUser).ToList();
+            }
+            else
+            {
+                bTUser = await _userManager.GetUserAsync(User);
+                tickets = await _ticketService.GetTicketsByUserIdAsync(bTUser.Id, bTUser.CompanyId);
+            }
+
+            
 
             return View(tickets);
         }
