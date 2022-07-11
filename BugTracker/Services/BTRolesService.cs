@@ -28,7 +28,6 @@ namespace BugTracker.Services
         }
         #endregion
 
-
         #region Add User To Role
         public async Task<bool> AddUserToRoleAsync(BTUser user, string roleName)
         {

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using BugTracker.Models.Enums
+@{
+
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
     {
         Layout = (string)parentLayout;
@@ -15,12 +17,23 @@
     <h2>Change your account settings</h2>
     <hr />
     <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
+        @{
+            // Do not allow Demo users to access page
+            if (User.IsInRole(nameof(Roles.DemoUser)))
+            {
+                <h3 class="text-danger">Access Denied</h3>
+            }
+            else
+            {
+                <div class="col-md-3">
+                    <partial name="_ManageNav" />
+                </div>
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
+            }
+        }
+
     </div>
 </div>
 
