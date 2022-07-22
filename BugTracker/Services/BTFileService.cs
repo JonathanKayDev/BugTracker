@@ -79,7 +79,7 @@ namespace BugTracker.Services
 
             if (!string.IsNullOrWhiteSpace(file))
             {
-                fileImage = Path.GetExtension(file).Replace(".", "");
+                fileImage = Path.GetExtension(file).Replace(".", "").ToLower();
 
                 return $"/img/contenttype/{fileImage}.png";
             }
