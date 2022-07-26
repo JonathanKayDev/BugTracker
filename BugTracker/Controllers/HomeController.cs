@@ -34,16 +34,10 @@ namespace BugTracker.Controllers
         #endregion
 
         #region Index
+        [Authorize]
         public IActionResult Index()
         {
-            if (_signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction("Dashboard");
-            }
-            else
-            {
-                return new RedirectResult("~/Identity/Account/Login");
-            }
+            return RedirectToAction("Dashboard");
         }
         #endregion
 
