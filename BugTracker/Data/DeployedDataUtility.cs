@@ -1,6 +1,8 @@
 ﻿using BugTracker.Models;
 using BugTracker.Models.Enums;
 using BugTracker.Models.Settings;
+using BugTracker.Services;
+using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -11,45 +13,22 @@ namespace BugTracker.Data
 
     public class DeployedDataUtility
     {
+        #region Properties
         private readonly AppSettings _appSettings;
-
-        public DeployedDataUtility(IOptions<AppSettings> appSettings)
-        {
-            _appSettings = appSettings.Value;
-        }
-
-
+        private readonly ISecretsService _secretsService;
         //Company Ids
         private int company1Id;
+        #endregion
 
-        //public string GetConnectionString(IConfiguration configuration)
-        //{
-        //    //The default connection string will come from appSettings like usual
-        //    var connectionString = configuration.GetConnectionString("DefaultConnection");
-        //    //It will be automatically overwritten if we are running on Heroku
-        //    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-        //    return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
-        //}
+        #region Constructor
+        public DeployedDataUtility(IOptions<AppSettings> appSettings, ISecretsService secretsService)
+        {
+            _appSettings = appSettings.Value;
+            _secretsService = secretsService;
+        }
+        #endregion
 
-        //public string BuildConnectionString(string databaseUrl)
-        //{
-        //    //Provides an object representation of a uniform resource identifier (URI) and easy access to the parts of the URI.
-        //    var databaseUri = new Uri(databaseUrl);
-        //    var userInfo = databaseUri.UserInfo.Split(':');
-        //    //Provides a simple way to create and manage the contents of connection strings used by the NpgsqlConnection class.
-        //    var builder = new NpgsqlConnectionStringBuilder
-        //    {
-        //        Host = databaseUri.Host,
-        //        Port = databaseUri.Port,
-        //        Username = userInfo[0],
-        //        Password = userInfo[1],
-        //        Database = databaseUri.LocalPath.TrimStart('/'),
-        //        SslMode = SslMode.Prefer,
-        //        TrustServerCertificate = true
-        //    };
-        //    return builder.ToString();
-        //}
-
+        #region Manage Data Async
         public async Task ManageDataAsync(IHost host)
         {
             using var svcScope = host.Services.CreateScope();
@@ -76,8 +55,9 @@ namespace BugTracker.Data
             //await SeedDefautProjectsAsync(dbContextSvc);
             //await SeedDefautTicketsAsync(dbContextSvc);
         }
+        #endregion
 
-
+        #region Seed Roles Async
         public async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
@@ -88,7 +68,9 @@ namespace BugTracker.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Submitter.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.DemoUser.ToString()));
         }
+        #endregion
 
+        #region Seed Default Companies Async
         public async Task SeedDefaultCompaniesAsync(ApplicationDbContext context)
         {
             try
@@ -113,7 +95,9 @@ namespace BugTracker.Data
                 throw;
             }
         }
+        #endregion
 
+        #region Seed Default Project Priority Async
         public async Task SeedDefaultProjectPriorityAsync(ApplicationDbContext context)
         {
             try
@@ -139,7 +123,9 @@ namespace BugTracker.Data
                 throw;
             }
         }
+        #endregion
 
+        #region Seed Default Projects Async
         public async Task SeedDefautProjectsAsync(ApplicationDbContext context)
         {
 
@@ -176,18 +162,18 @@ namespace BugTracker.Data
                 throw;
             }
         }
+        #endregion
 
-
-
+        #region Seed Default Users Async
         public async Task SeedDefaultUsersAsync(UserManager<BTUser> userManager)
         {
             //Seed Default Site Admin User
             var defaultUser = new BTUser
             {
-                UserName = _appSettings.SiteAdminCredentials.Email,
-                Email = _appSettings.SiteAdminCredentials.Email,
-                FirstName = "Jonathan",
-                LastName = "Site Admin",
+                UserName = _secretsService.GetSiteAdminEmail(),
+                Email = _secretsService.GetSiteAdminEmail(),
+                FirstName = _appSettings.SiteAdminCredentials.FirstName,
+                LastName = _appSettings.SiteAdminCredentials.LastName,
                 EmailConfirmed = true,
                 CompanyId = company1Id
             };
@@ -196,7 +182,7 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, _appSettings.SiteAdminCredentials.Password);
+                    await userManager.CreateAsync(defaultUser, _secretsService.GetSiteAdminPassword());
                     await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Roles.SiteAdmin.ToString());
                 }
@@ -213,10 +199,10 @@ namespace BugTracker.Data
             //Seed Default Admin User
             defaultUser = new BTUser
             {
-                UserName = _appSettings.DefaultCredentials.Email,
-                Email = _appSettings.DefaultCredentials.Email,
-                FirstName = "Jonathan",
-                LastName = "Kay",
+                UserName = _secretsService.GetDefaultUserEmail(),
+                Email = _secretsService.GetDefaultUserEmail(),
+                FirstName = _appSettings.DefaultCredentials.FirstName,
+                LastName = _appSettings.DefaultCredentials.LastName,
                 EmailConfirmed = true,
                 CompanyId = company1Id
             };
@@ -225,7 +211,7 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, _appSettings.SiteAdminCredentials.Password);
+                    await userManager.CreateAsync(defaultUser, _secretsService.GetDefaultUserPassword());
                     await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
                 }
             }
@@ -239,7 +225,9 @@ namespace BugTracker.Data
             }
 
         }
+        #endregion
 
+        #region Seed Demo Users Async
         public async Task SeedDemoUsersAsync(UserManager<BTUser> userManager)
         {
             //Seed Demo Admin User
@@ -362,9 +350,9 @@ namespace BugTracker.Data
                 throw;
             }
         }
+        #endregion
 
-
-
+        #region Seed Default Ticket Type Async
         public async Task SeedDefaultTicketTypeAsync(ApplicationDbContext context)
         {
             try
@@ -392,7 +380,9 @@ namespace BugTracker.Data
                 throw;
             }
         }
+        #endregion
 
+        #region Seed Default Ticket Status Async
         public async Task SeedDefaultTicketStatusAsync(ApplicationDbContext context)
         {
             try
@@ -418,7 +408,9 @@ namespace BugTracker.Data
                 throw;
             }
         }
+        #endregion
 
+        #region Seed Default Ticket Priority Async
         public async Task SeedDefaultTicketPriorityAsync(ApplicationDbContext context)
         {
             try
@@ -444,9 +436,9 @@ namespace BugTracker.Data
                 throw;
             }
         }
+        #endregion
 
-
-
+        #region Seed Default Tickets Async
         public async Task SeedDefautTicketsAsync(ApplicationDbContext context)
         {
             //Get project Ids
@@ -504,7 +496,8 @@ namespace BugTracker.Data
                 Console.WriteLine("***********************************");
                 throw;
             }
-        }
+        } 
+        #endregion
 
     }
 }

@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-BugTracker-DD29D4A0-A534-494D-A975-8EC7B70D28DB</UserSecretsId>
+    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,6 +47,7 @@
     <Compile Remove="Controllers\TicketPrioritiesController.cs" />
     <Compile Remove="Controllers\TicketStatusController.cs" />
     <Compile Remove="Controllers\TicketTypesController.cs" />
+    <Compile Remove="Data\DataUtility.cs" />
   </ItemGroup>
 
   <ItemGroup>

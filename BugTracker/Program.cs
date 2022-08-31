@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = DataUtility.GetConnectionString(builder.Configuration);
+var connectionString = ConnectionService.GetConnectionString(builder.Configuration);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString, 
     o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
@@ -41,6 +41,8 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 // register data ultility service
 builder.Services.AddTransient<DeployedDataUtility>();
+// Register SecretsService
+builder.Services.AddTransient<ISecretsService,SecretsService>();
 
 builder.Services.AddControllersWithViews();
 
